@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Organizing Skill Files for Large Orchestration — Claude</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: #f5f5f0;
+    background-image: radial-gradient(circle, #d4d4cc 1px, transparent 1px);
+    background-size: 24px 24px;
+    min-height: 100vh;
+    color: #1a1a1a;
+  }
+
+  /* ── Header ── */
+  .header {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(245,245,240,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid #e0e0d8;
+    padding: 14px 32px;
+    display: flex; align-items: center; gap: 14px;
+  }
+  .header .logo {
+    width: 36px; height: 36px; background: #d97706; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; color: #fff; font-size: 18px;
+  }
+  .header h1 { font-size: 16px; font-weight: 600; color: #333; }
+  .header .sub { font-size: 12px; color: #888; margin-left: auto; }
+
+  /* ── Board & Spine ── */
+  .board { max-width: 1200px; margin: 0 auto; padding: 48px 32px 80px; }
+  .spine { display: flex; flex-direction: column; align-items: center; }
+
+  /* ── Hero ── */
+  .hero { text-align: center; margin-bottom: 24px; }
+  .hero h2 { font-size: 38px; font-weight: 800; line-height: 1.15; }
+  .hero h2 span { color: #d97706; }
+  .hero p { font-size: 16px; color: #666; max-width: 620px; margin: 10px auto 0; line-height: 1.6; }
+
+  /* ── Arrows & Badges ── */
+  .arrow {
+    width: 3px; height: 44px; position: relative;
+    --c: #d97706; background: var(--c);
+  }
+  .arrow::after {
+    content: ''; position: absolute; bottom: -7px; left: -6px;
+    border-left: 7.5px solid transparent; border-right: 7.5px solid transparent;
+    border-top: 8px solid var(--c);
+  }
+  .step {
+    display: inline-flex; align-items: center;
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1.4px; padding: 6px 18px; border-radius: 20px;
+    color: #fff; --c: #d97706; background: var(--c);
+  }
+  .callout {
+    font-size: 12px; color: #777; font-style: italic;
+    text-align: center; max-width: 480px; line-height: 1.55; padding: 4px 0;
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff; border-radius: 14px; padding: 26px;
+    box-shadow: 0 1px 3px rgba(0,0,0,.05), 0 4px 14px rgba(0,0,0,.04);
+    border: 1px solid #e8e8e0;
+  }
+  .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+  .card p, .card li { font-size: 13.5px; line-height: 1.65; color: #444; }
+
+  /* ── Layout helpers ── */
+  .row { display: flex; gap: 24px; width: 100%; max-width: 1000px; align-items: stretch; }
+  .row > .card { flex: 1; min-width: 0; }
+  .three { display: flex; gap: 20px; width: 100%; max-width: 1000px; }
+  .three > .card { flex: 1; min-width: 0; position: relative; overflow: hidden; }
+  .gap { height: 12px; }
+
+  /* ── File tree ── */
+  .file-tree {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px; line-height: 1.85; white-space: pre;
+    background: #fafaf7; color: #3a3a3a;
+    border: 1.5px solid #e0ddd5; border-radius: 10px;
+    padding: 20px 24px; overflow-x: auto; margin-top: 10px;
+  }
+  .file-tree .dir { color: #2563eb; font-weight: 600; }
+  .file-tree .file { color: #16a34a; font-weight: 500; }
+  .file-tree .req { color: #dc2626; font-size: 10.5px; font-weight: 600; }
+  .file-tree .opt { color: #888; font-size: 10.5px; }
+  .file-tree .cm { color: #999; }
+
+  /* ── Code block ── */
+  .code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; line-height: 1.8; white-space: pre;
+    background: #fafaf7; color: #3a3a3a;
+    border: 1.5px solid #e0ddd5; border-radius: 10px;
+    padding: 16px 20px; margin-top: 10px; overflow-x: auto;
+  }
+  .code .kw { color: #9333ea; font-weight: 600; }
+  .code .str { color: #16a34a; }
+  .code .cm { color: #999; font-weight: 500; }
+
+  /* ── Orchestration diagram ── */
+  .orch { display: flex; flex-direction: column; align-items: center; padding: 16px 0; }
+  .orch-node {
+    border: 2px solid; border-radius: 10px;
+    padding: 10px 22px; font-size: 13px; font-weight: 600; text-align: center;
+  }
+  .orch-node.parent { background: #fffbeb; border-color: #d97706; color: #92400e; }
+  .orch-node.child { background: #eff6ff; border-color: #3b82f6; color: #1e40af; font-size: 12px; }
+  .orch-arrow { width: 2px; height: 22px; background: #d97706; position: relative; }
+  .orch-arrow::after {
+    content: ''; position: absolute; bottom: -5px; left: -4px;
+    border-left: 5px solid transparent; border-right: 5px solid transparent;
+    border-top: 6px solid #d97706;
+  }
+  .orch-children { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+  /* ── Level numbers ── */
+  .level-num {
+    position: absolute; top: -6px; right: -2px;
+    font-size: 72px; font-weight: 800; color: rgba(0,0,0,.04); line-height: 1;
+  }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 3px 10px; border-radius: 16px; margin-bottom: 10px;
+  }
+
+  /* ── Sticky notes ── */
+  .stickies { display: flex; gap: 18px; width: 100%; max-width: 1000px; flex-wrap: wrap; justify-content: center; }
+  .sticky {
+    flex: 1; min-width: 200px; max-width: 240px;
+    padding: 20px; border-radius: 4px;
+    box-shadow: 2px 3px 8px rgba(0,0,0,.1);
+    transform: rotate(var(--r, 0deg));
+    font-size: 13px; line-height: 1.55; font-weight: 500;
+  }
+  .sticky b { font-size: 11px; text-transform: uppercase; letter-spacing: .5px; display: block; margin-bottom: 6px; opacity: .7; }
+
+  /* ── Do / Don't ── */
+  .do-card { border-top: 4px solid #16a34a; }
+  .dont-card { border-top: 4px solid #dc2626; }
+
+  /* ── Principle cards ── */
+  .principle { border-left: 4px solid var(--c, #d97706); padding-left: 22px !important; }
+
+  /* ── Callout box ── */
+  .tip {
+    border-radius: 8px; padding: 12px 16px;
+    font-size: 12.5px; line-height: 1.6; border: 1px solid;
+  }
+
+  /* ── Lists ── */
+  ul { list-style: none; padding: 0; }
+  ul li { padding-left: 18px; position: relative; margin-bottom: 3px; }
+  ul li::before {
+    content: ''; position: absolute; left: 0; top: 8px;
+    width: 7px; height: 7px; border-radius: 50%; background: #d97706;
+  }
+
+  .footer { text-align: center; padding: 48px 0 20px; color: #aaa; font-size: 12px; }
+
+  @media (max-width: 800px) {
+    .row, .three { flex-direction: column; }
+    .stickies { flex-direction: column; align-items: center; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">S</div>
+  <h1>Skill Architecture — Large Orchestration Guide</h1>
+  <span class="sub">Claude Skills &middot; Best Practices</span>
+</div>
+
+<div class="board">
+  <div class="hero">
+    <h2>Organizing Skill Files for<br><span>Large Orchestration</span></h2>
+    <p>Follow the flow: structure &rarr; loading &rarr; orchestration &rarr; principles &rarr; pitfalls. Each step builds on the last.</p>
+  </div>
+
+  <div class="spine">
+
+    <!-- ═══ STEP 1: ANATOMY ═══ -->
+    <div class="arrow"></div>
+    <div class="step">Step 1 &mdash; Know the Structure</div>
+    <div class="arrow"></div>
+
+    <div class="row">
+      <div class="card" style="flex:1.15;">
+        <h3>Canonical Skill Directory</h3>
+        <p>Every skill lives in its own folder. Only <code>SKILL.md</code> is required. Three official bundled resource types live alongside it.</p>
+        <div class="file-tree">
+<span class="dir">my-skill/</span>
+├── <span class="file">SKILL.md</span>            <span class="req">(required)</span>
+│   ├── YAML frontmatter   <span class="cm">&larr; name + description</span>
+│   └── Markdown body      <span class="cm">&larr; instructions</span>
+│
+├── <span class="dir">scripts/</span>            <span class="opt">(optional)</span>
+│   └── build_report.py    <span class="cm">&larr; deterministic / repetitive tasks</span>
+│
+├── <span class="dir">references/</span>         <span class="opt">(optional)</span>
+│   └── aws.md             <span class="cm">&larr; docs loaded into context as needed</span>
+│
+└── <span class="dir">assets/</span>             <span class="opt">(optional)</span>
+    └── template.html      <span class="cm">&larr; templates, icons, fonts</span>
+        </div>
+        <p style="margin-top:12px;font-size:12px;color:#666;">Large orchestration skills often add more directories. Common extensions include <code>agents/</code> for subagent role definitions and <code>evals/</code> for test cases.</p>
+      </div>
+
+      <div class="card" style="flex:0.85;">
+        <h3>SKILL.md — The Brain</h3>
+        <p>The <strong>only</strong> file Claude reads when a skill triggers. Everything else is pulled in on demand via explicit pointers.</p>
+        <div class="code" style="margin-top:14px;">
+<span class="cm">---</span>
+<span class="kw">name</span>: daily-prep
+<span class="kw">description</span>: <span class="str">></span>
+  <span class="str">Run the full morning prep</span>
+  <span class="str">sequence. Use whenever the</span>
+  <span class="str">user says "daily prep",</span>
+  <span class="str">"start my day", etc.</span>
+<span class="cm">---</span>
+
+<span class="cm"># Daily Prep — Orchestrator</span>
+<span class="cm">## Step 1: Get Context</span>
+Fetch calendar, find calls...
+<span class="cm">## Step 2: Run Inbox Triage</span>
+Follow <span class="str">`inbox-triage`</span> skill...
+        </div>
+        <div class="tip" style="margin-top:14px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
+          <strong>Key rule:</strong> Keep SKILL.md under ~500 lines. If you're approaching the limit, offload detail into <code>references/</code> with clear pointers about when to read them.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:8px;">The structure is set. Now, how does Claude actually load all of this?</div>
+
+    <!-- ═══ STEP 2: THREE-LEVEL LOADING ═══ -->
+    <div class="arrow" style="--c:#3b82f6;"></div>
+    <div class="step" style="--c:#3b82f6;background:#3b82f6;">Step 2 &mdash; Understand the Loading Model</div>
+    <div class="arrow" style="--c:#3b82f6;"></div>
+
+    <div class="three">
+      <div class="card" style="overflow:hidden;">
+        <div class="level-num">1</div>
+        <span class="badge" style="background:#fef3c7;color:#92400e;">Always in Context</span>
+        <h3>Metadata</h3>
+        <p><strong>name + description</strong> from YAML frontmatter. Always visible in Claude's skill list (~100 words). This is the <em>trigger mechanism</em> — it determines whether the skill fires at all.</p>
+        <p style="margin-top:10px;font-size:12px;color:#92400e;font-weight:600;">Tip: Make descriptions "pushy" — list trigger phrases and edge cases. Under-triggering is the #1 problem.</p>
+      </div>
+      <div class="card" style="overflow:hidden;">
+        <div class="level-num">2</div>
+        <span class="badge" style="background:#dbeafe;color:#1e40af;">On Trigger</span>
+        <h3>SKILL.md Body</h3>
+        <p>Full workflow instructions, output format specs, and pointers to bundled resources. Loaded into context only when the skill triggers. Target <strong>&lt;500 lines</strong>.</p>
+        <p style="margin-top:10px;font-size:12px;color:#1e40af;font-weight:600;">Tip: Explain the "why" behind instructions — Claude generalizes better from reasoning than rigid rules.</p>
+      </div>
+      <div class="card" style="overflow:hidden;">
+        <div class="level-num">3</div>
+        <span class="badge" style="background:#f3e8ff;color:#6b21a8;">As Needed</span>
+        <h3>Bundled Resources</h3>
+        <p>Scripts, references, and assets. Loaded only when SKILL.md explicitly tells Claude to read them. Scripts can <strong>execute without loading into context</strong> — zero cost.</p>
+        <p style="margin-top:10px;font-size:12px;color:#6b21a8;font-weight:600;">Tip: Unlimited size. Great for domain variants and large templates.</p>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;margin-top:6px;">
+      <span style="font-size:11px;color:#aaa;font-weight:600;">CHEAP</span>
+      <div style="flex:1;max-width:300px;height:2px;background:linear-gradient(to right,#fbbf24,#3b82f6,#9333ea);border-radius:2px;"></div>
+      <span style="font-size:11px;color:#aaa;font-weight:600;">EXPENSIVE</span>
+    </div>
+    <div class="callout">Loading is progressive: metadata is always there, the body loads on trigger, resources load on demand.</div>
+
+    <!-- ═══ STEP 3: ORCHESTRATION PATTERNS ═══ -->
+    <div class="arrow" style="--c:#9333ea;"></div>
+    <div class="step" style="background:#9333ea;">Step 3 &mdash; Choose an Orchestration Pattern</div>
+    <div class="arrow" style="--c:#9333ea;"></div>
+
+    <div class="row">
+      <div class="card">
+        <h3>Pattern A: Skill Tree</h3>
+        <p style="margin-bottom:14px;">One orchestrator calls sub-skills in sequence. Each sub-skill also works independently.</p>
+        <div class="orch">
+          <div class="orch-node parent">daily-prep<br><span style="font-size:10px;font-weight:400;">orchestrator</span></div>
+          <div class="orch-arrow"></div>
+          <div class="orch-children">
+            <div class="orch-node child">inbox-triage</div>
+            <div class="orch-node child">slack-review</div>
+            <div class="orch-node child">call-prep</div>
+          </div>
+        </div>
+        <div class="code" style="font-size:11.5px;">
+<span class="cm">## Step 1: Get Context</span>
+Fetch calendar, identify external calls.
+
+<span class="cm">## Step 2: Run Inbox Triage</span>
+Follow the <span class="str">`inbox-triage`</span> skill fully.
+Capture the full output.
+
+<span class="cm">## Step 3: Run Slack Review</span>
+Follow the <span class="str">`slack-review`</span> skill fully.
+Capture the full output.
+
+<span class="cm">## Step 4: Run Call Prep</span>
+For each meeting from Step 1,
+follow <span class="str">`call-prep`</span> skill fully.
+
+<span class="cm">## Step 5: Compose &amp; Post</span>
+Combine all outputs into one message.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Pattern B: Domain Variants</h3>
+        <p style="margin-bottom:10px;">One skill, multiple domains. SKILL.md routes to the right reference file based on context.</p>
+        <div class="file-tree" style="font-size:12px;padding:14px 18px;">
+<span class="dir">cloud-deploy/</span>
+├── <span class="file">SKILL.md</span>       <span class="cm">&larr; shared workflow + routing</span>
+└── <span class="dir">references/</span>
+    ├── <span class="file">aws.md</span>     <span class="cm">&larr; AWS-specific steps</span>
+    ├── <span class="file">gcp.md</span>     <span class="cm">&larr; GCP-specific steps</span>
+    └── <span class="file">azure.md</span>   <span class="cm">&larr; Azure-specific steps</span>
+        </div>
+        <p style="margin-top:10px;">Claude reads <strong>only</strong> the relevant reference — keeping context lean.</p>
+
+        <h3 style="margin-top:20px;">Pattern C: Subagent Delegation</h3>
+        <p style="margin-bottom:10px;">For parallel or isolated work, define agent roles in an <code>agents/</code> directory.</p>
+        <div class="file-tree" style="font-size:12px;padding:14px 18px;">
+<span class="dir">skill-creator/</span>
+├── <span class="file">SKILL.md</span>
+└── <span class="dir">agents/</span>
+    ├── <span class="file">grader.md</span>      <span class="cm">&larr; evaluates assertions</span>
+    ├── <span class="file">comparator.md</span>  <span class="cm">&larr; blind A/B comparison</span>
+    └── <span class="file">analyzer.md</span>    <span class="cm">&larr; analyzes results</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">You've picked a pattern. Now make sure it holds up with these principles.</div>
+
+    <!-- ═══ STEP 4: CORE PRINCIPLES ═══ -->
+    <div class="arrow" style="--c:#16a34a;"></div>
+    <div class="step" style="background:#16a34a;">Step 4 &mdash; Follow Core Principles</div>
+    <div class="arrow" style="--c:#16a34a;"></div>
+
+    <div class="row">
+      <div class="card principle" style="--c:#d97706;">
+        <h3>Explain the Why</h3>
+        <p>Instead of rigid <code>ALWAYS</code>/<code>NEVER</code> rules, explain the reasoning. Claude generalizes better from rationale than from commands. If you're writing in all-caps, reframe as a justification.</p>
+      </div>
+      <div class="card principle" style="--c:#3b82f6;">
+        <h3>Keep It Lean</h3>
+        <p>SKILL.md is context-window real estate. Move domain detail &rarr; <code>references/</code>, repetitive logic &rarr; <code>scripts/</code>, agent personas &rarr; <code>agents/</code>. Reference them clearly with "when to read" guidance.</p>
+      </div>
+    </div>
+    <div class="gap"></div>
+    <div class="row">
+      <div class="card principle" style="--c:#16a34a;">
+        <h3>Sub-Skills Stand Alone</h3>
+        <p>Every sub-skill in an orchestration tree must be independently triggerable. A user should be able to run <code>inbox-triage</code> on its own or as part of <code>daily-prep</code>. Never make a skill dependent on being called by a parent.</p>
+      </div>
+      <div class="card principle" style="--c:#9333ea;">
+        <h3>Generalize, Don't Overfit</h3>
+        <p>Skills are used thousands of times across many different prompts. When iterating, encode the underlying principle — not a narrow fix for one specific test case. If a change only works for one example, find the deeper pattern.</p>
+      </div>
+    </div>
+
+    <div class="callout">And finally — some quick heuristics to keep in your pocket.</div>
+
+    <!-- ═══ STEP 5: DO vs DON'T ═══ -->
+    <div class="arrow" style="--c:#dc2626;"></div>
+    <div class="step" style="background:#dc2626;">Step 5 &mdash; Avoid Common Pitfalls</div>
+    <div class="arrow" style="--c:#dc2626;"></div>
+
+    <div class="row">
+      <div class="card do-card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;color:#16a34a;">Do This</div>
+        <ul>
+          <li><strong>Use progressive disclosure</strong> — metadata &rarr; body &rarr; resources</li>
+          <li><strong>Bundle repeated scripts</strong> — if subagents keep writing the same helper code, make it shared</li>
+          <li><strong>Write pushy descriptions</strong> — list every trigger phrase a user might say</li>
+          <li><strong>Handle partial failure</strong> — orchestrators degrade gracefully, not catastrophically</li>
+          <li><strong>Include input/output examples</strong> for non-obvious formats</li>
+        </ul>
+      </div>
+      <div class="card dont-card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;color:#dc2626;">Don't Do This</div>
+        <ul>
+          <li><strong>Don't exceed ~500 lines</strong> in SKILL.md — refactor into references</li>
+          <li><strong>Don't use vague descriptions</strong> — "a helpful skill for data" won't trigger</li>
+          <li><strong>Don't hardcode context</strong> — avoid baking in names, dates, or values that change</li>
+          <li><strong>Don't duplicate logic</strong> — extract shared steps into a sub-skill or reference</li>
+          <li><strong>Don't litter with MUST/NEVER</strong> — explain the reasoning instead</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ═══ STICKY NOTES ═══ -->
+    <div style="height:36px;"></div>
+    <div class="stickies">
+      <div class="sticky" style="background:#fef9c3;--r:-1.2deg;">
+        <b>Scripts</b>
+        If all test runs independently write the same helper script, bundle it in <code>scripts/</code>. Save every future run from reinventing the wheel.
+      </div>
+      <div class="sticky" style="background:#dbeafe;--r:0.8deg;">
+        <b>Large References</b>
+        For reference files over 300 lines, include a table of contents at the top so Claude can navigate efficiently.
+      </div>
+      <div class="sticky" style="background:#dcfce7;--r:-0.5deg;">
+        <b>Error Handling</b>
+        If a sub-skill fails, still run the others. Note the failure in output. A partial result beats no result.
+      </div>
+      <div class="sticky" style="background:#fce7f3;--r:1.5deg;">
+        <b>Triggering</b>
+        Under-triggering is the #1 skill problem. Be aggressive with description phrases — cast a wide net.
+      </div>
+    </div>
+
+    <!-- ═══ CHEAT SHEET ═══ -->
+    <div style="height:24px;"></div>
+    <div style="width:100%;max-width:1000px;">
+      <div class="card" style="border:2px dashed #d97706;background:#fffbeb;">
+        <h3 style="color:#92400e;margin-bottom:14px;">Quick-Reference Cheat Sheet</h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+          <div>
+            <p style="font-weight:700;font-size:13px;margin-bottom:6px;color:#d97706;">Sizing</p>
+            <p style="font-size:12.5px;line-height:1.7;">
+              <strong>Description:</strong> ~100 words<br>
+              <strong>SKILL.md body:</strong> &lt;500 lines<br>
+              <strong>Reference files:</strong> unlimited<br>
+              <strong>Ref &gt;300 lines:</strong> add a TOC<br>
+              <strong>Scripts:</strong> no context cost
+            </p>
+          </div>
+          <div>
+            <p style="font-weight:700;font-size:13px;margin-bottom:6px;color:#3b82f6;">When to Create Sub-Files</p>
+            <p style="font-size:12.5px;line-height:1.7;">
+              <strong>scripts/</strong> &rarr; deterministic logic<br>
+              <strong>references/</strong> &rarr; domain-specific docs<br>
+              <strong>assets/</strong> &rarr; templates, images, fonts<br>
+              <strong>agents/</strong> &rarr; subagent roles (extended)<br>
+              <strong>evals/</strong> &rarr; test cases (extended)
+            </p>
+          </div>
+          <div>
+            <p style="font-weight:700;font-size:13px;margin-bottom:6px;color:#9333ea;">Orchestrator Checklist</p>
+            <p style="font-size:12.5px;line-height:1.7;">
+              &#10003; Gather shared context first<br>
+              &#10003; Call sub-skills by name<br>
+              &#10003; Capture each sub-skill's output<br>
+              &#10003; Handle partial failures gracefully<br>
+              &#10003; Assemble and deliver final result
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+</div>
+</body>
+</html>
