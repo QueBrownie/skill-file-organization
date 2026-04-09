@@ -158,6 +158,32 @@
     font-size: 12.5px; line-height: 1.6; border: 1px solid;
   }
 
+  /* ── Comparison table ── */
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  .compare-table th { padding: 8px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+  .compare-table td { padding: 10px 14px; border-top: 1px solid #f0ede6; vertical-align: top; line-height: 1.5; color: #444; }
+  .compare-table .bad-col { background: #fff5f5; color: #991b1b; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .compare-table .good-col { background: #f0fdf4; color: #14532d; font-family: 'JetBrains Mono', monospace; font-size: 12px; }
+  .compare-table .why-col { background: #fafaf7; font-size: 12.5px; }
+
+  /* ── Decision table ── */
+  .decision-table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 13px; }
+  .decision-table th { padding: 8px 14px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; background: #fafaf7; color: #666; }
+  .decision-table td { padding: 10px 14px; border-top: 1px solid #f0ede6; vertical-align: top; line-height: 1.5; color: #444; }
+  .decision-table tr:hover td { background: #fafaf7; }
+  .tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 9px; border-radius: 12px; white-space: nowrap;
+  }
+
+  /* ── Debug steps ── */
+  .debug-step { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 14px; }
+  .debug-num {
+    width: 26px; height: 26px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: #fff; background: #dc2626;
+  }
+
   /* ── Lists ── */
   ul { list-style: none; padding: 0; }
   ul li { padding-left: 18px; position: relative; margin-bottom: 3px; }
@@ -171,6 +197,7 @@
   @media (max-width: 800px) {
     .row, .three { flex-direction: column; }
     .stickies { flex-direction: column; align-items: center; }
+    .compare-table th, .compare-table td { display: block; }
   }
 </style>
 </head>
@@ -185,7 +212,7 @@
 <div class="board">
   <div class="hero">
     <h2>Organizing Skill Files for<br><span>Large Orchestration</span></h2>
-    <p>Follow the flow: structure &rarr; loading &rarr; orchestration &rarr; principles &rarr; pitfalls. Each step builds on the last.</p>
+    <p>Follow the flow: structure &rarr; loading &rarr; orchestration &rarr; principles &rarr; pitfalls &rarr; descriptions &rarr; testing &rarr; power patterns &rarr; right tool. Each step builds on the last.</p>
   </div>
 
   <div class="spine">
@@ -202,39 +229,65 @@
         <div class="file-tree">
 <span class="dir">my-skill/</span>
 ├── <span class="file">SKILL.md</span>            <span class="req">(required)</span>
-│   ├── YAML frontmatter   <span class="cm">&larr; name + description</span>
-│   └── Markdown body      <span class="cm">&larr; instructions</span>
+│   ├── YAML frontmatter   <span class="cm">&larr; name + description (the trigger)</span>
+│   └── Markdown body      <span class="cm">&larr; full workflow instructions</span>
 │
 ├── <span class="dir">scripts/</span>            <span class="opt">(optional)</span>
-│   └── build_report.py    <span class="cm">&larr; deterministic / repetitive tasks</span>
+│   └── build_report.py    <span class="cm">&larr; deterministic / repetitive logic</span>
 │
 ├── <span class="dir">references/</span>         <span class="opt">(optional)</span>
-│   └── aws.md             <span class="cm">&larr; docs loaded into context as needed</span>
+│   └── aws.md             <span class="cm">&larr; domain docs, loaded on demand</span>
 │
-└── <span class="dir">assets/</span>             <span class="opt">(optional)</span>
-    └── template.html      <span class="cm">&larr; templates, icons, fonts</span>
+├── <span class="dir">assets/</span>             <span class="opt">(optional)</span>
+│   └── template.html      <span class="cm">&larr; templates, icons, fonts</span>
+│
+├── <span class="dir">agents/</span>             <span class="opt">(optional, extended)</span>
+│   └── grader.md          <span class="cm">&larr; subagent role definitions</span>
+│
+└── <span class="dir">evals/</span>              <span class="opt">(optional, extended)</span>
+    └── test_cases.md      <span class="cm">&larr; test prompts + expected behaviors</span>
         </div>
-        <p style="margin-top:12px;font-size:12px;color:#666;">Large orchestration skills often add more directories. Common extensions include <code>agents/</code> for subagent role definitions and <code>evals/</code> for test cases.</p>
+        <p style="margin-top:12px;font-size:12px;color:#666;">Large orchestration skills often add <code>agents/</code> for subagent role definitions and <code>evals/</code> for test cases — both are extensions of the core structure, not official types.</p>
       </div>
 
       <div class="card" style="flex:0.85;">
-        <h3>SKILL.md — The Brain</h3>
-        <p>The <strong>only</strong> file Claude reads when a skill triggers. Everything else is pulled in on demand via explicit pointers.</p>
+        <h3>SKILL.md — A Complete Example</h3>
+        <p>The <strong>only</strong> file Claude reads when a skill triggers. Everything else is pulled in on demand via explicit pointers in the body.</p>
         <div class="code" style="margin-top:14px;">
 <span class="cm">---</span>
 <span class="kw">name</span>: daily-prep
 <span class="kw">description</span>: <span class="str">></span>
-  <span class="str">Run the full morning prep</span>
-  <span class="str">sequence. Use whenever the</span>
-  <span class="str">user says "daily prep",</span>
-  <span class="str">"start my day", etc.</span>
+  <span class="str">Run the full morning prep sequence.</span>
+  <span class="str">Use whenever the user says "daily prep",</span>
+  <span class="str">"start my day", "morning briefing",</span>
+  <span class="str">"what's on my plate", or asks for a</span>
+  <span class="str">summary of their day ahead.</span>
 <span class="cm">---</span>
 
 <span class="cm"># Daily Prep — Orchestrator</span>
-<span class="cm">## Step 1: Get Context</span>
-Fetch calendar, find calls...
+
+<span class="cm">## Step 1: Gather Shared Context</span>
+Fetch today's calendar. Identify external calls.
+Note any blockers visible from prior context.
+
 <span class="cm">## Step 2: Run Inbox Triage</span>
-Follow <span class="str">`inbox-triage`</span> skill...
+Follow the <span class="str">`inbox-triage`</span> skill fully.
+Capture the complete output before moving on.
+
+<span class="cm">## Step 3: Run Slack Review</span>
+Follow the <span class="str">`slack-review`</span> skill fully.
+Capture the complete output before moving on.
+
+<span class="cm">## Step 4: Prep Each Call</span>
+For each external meeting from Step 1,
+follow the <span class="str">`call-prep`</span> skill fully.
+
+<span class="cm">## Step 5: Compose &amp; Deliver</span>
+Combine all outputs into one structured
+briefing. Post to the user's daily thread.
+
+<span class="cm">## Output Format</span>
+Use the template in <span class="str">`assets/daily-brief.md`</span>.
         </div>
         <div class="tip" style="margin-top:14px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
           <strong>Key rule:</strong> Keep SKILL.md under ~500 lines. If you're approaching the limit, offload detail into <code>references/</code> with clear pointers about when to read them.
@@ -261,14 +314,14 @@ Follow <span class="str">`inbox-triage`</span> skill...
         <div class="level-num">2</div>
         <span class="badge" style="background:#dbeafe;color:#1e40af;">On Trigger</span>
         <h3>SKILL.md Body</h3>
-        <p>Full workflow instructions, output format specs, and pointers to bundled resources. Loaded into context only when the skill triggers. Target <strong>&lt;500 lines</strong>.</p>
+        <p>Full workflow instructions, output format specs, and pointers to bundled resources. Loaded into context only when the skill triggers. Target <strong>&lt;500 lines</strong> — this is real context-window space, so every line has a cost.</p>
         <p style="margin-top:10px;font-size:12px;color:#1e40af;font-weight:600;">Tip: Explain the "why" behind instructions — Claude generalizes better from reasoning than rigid rules.</p>
       </div>
       <div class="card" style="overflow:hidden;">
         <div class="level-num">3</div>
         <span class="badge" style="background:#f3e8ff;color:#6b21a8;">As Needed</span>
         <h3>Bundled Resources</h3>
-        <p>Scripts, references, and assets. Loaded only when SKILL.md explicitly tells Claude to read them. Scripts can <strong>execute without loading into context</strong> — zero cost.</p>
+        <p>Scripts, references, and assets. Loaded only when SKILL.md explicitly tells Claude to read them. <strong>Scripts are executed via the Bash tool</strong> — Claude runs them and gets the output, but the script source never enters context. A 500-line script costs zero context tokens.</p>
         <p style="margin-top:10px;font-size:12px;color:#6b21a8;font-weight:600;">Tip: Unlimited size. Great for domain variants and large templates.</p>
       </div>
     </div>
@@ -299,16 +352,13 @@ Follow <span class="str">`inbox-triage`</span> skill...
           </div>
         </div>
         <div class="code" style="font-size:11.5px;">
-<span class="cm">## Step 1: Get Context</span>
-Fetch calendar, identify external calls.
-
 <span class="cm">## Step 2: Run Inbox Triage</span>
 Follow the <span class="str">`inbox-triage`</span> skill fully.
-Capture the full output.
+Capture the full output before continuing.
 
 <span class="cm">## Step 3: Run Slack Review</span>
 Follow the <span class="str">`slack-review`</span> skill fully.
-Capture the full output.
+Capture the full output before continuing.
 
 <span class="cm">## Step 4: Run Call Prep</span>
 For each meeting from Step 1,
@@ -321,26 +371,53 @@ Combine all outputs into one message.
 
       <div class="card">
         <h3>Pattern B: Domain Variants</h3>
-        <p style="margin-bottom:10px;">One skill, multiple domains. SKILL.md routes to the right reference file based on context.</p>
+        <p style="margin-bottom:10px;">One skill, multiple domains. SKILL.md routes to the right reference file based on context — keeping context lean by loading only what's needed.</p>
         <div class="file-tree" style="font-size:12px;padding:14px 18px;">
 <span class="dir">cloud-deploy/</span>
-├── <span class="file">SKILL.md</span>       <span class="cm">&larr; shared workflow + routing</span>
+├── <span class="file">SKILL.md</span>       <span class="cm">&larr; shared workflow + routing logic</span>
 └── <span class="dir">references/</span>
     ├── <span class="file">aws.md</span>     <span class="cm">&larr; AWS-specific steps</span>
     ├── <span class="file">gcp.md</span>     <span class="cm">&larr; GCP-specific steps</span>
     └── <span class="file">azure.md</span>   <span class="cm">&larr; Azure-specific steps</span>
         </div>
-        <p style="margin-top:10px;">Claude reads <strong>only</strong> the relevant reference — keeping context lean.</p>
+        <div class="code" style="font-size:11.5px;margin-top:10px;">
+<span class="cm">## Step 1: Detect Platform</span>
+Check for aws/gcp/azure config in context.
+
+<span class="cm">## Step 2: Load Domain Docs</span>
+<span class="kw">If</span> AWS: read <span class="str">`references/aws.md`</span>
+<span class="kw">If</span> GCP: read <span class="str">`references/gcp.md`</span>
+<span class="kw">If</span> Azure: read <span class="str">`references/azure.md`</span>
+        </div>
 
         <h3 style="margin-top:20px;">Pattern C: Subagent Delegation</h3>
-        <p style="margin-bottom:10px;">For parallel or isolated work, define agent roles in an <code>agents/</code> directory.</p>
+        <p style="margin-bottom:10px;">For parallel or isolated work, define agent roles in an <code>agents/</code> directory. The orchestrator reads each agent file and spawns a subagent with that persona — each starts fresh with no shared context bleed.</p>
         <div class="file-tree" style="font-size:12px;padding:14px 18px;">
 <span class="dir">skill-creator/</span>
 ├── <span class="file">SKILL.md</span>
 └── <span class="dir">agents/</span>
-    ├── <span class="file">grader.md</span>      <span class="cm">&larr; evaluates assertions</span>
-    ├── <span class="file">comparator.md</span>  <span class="cm">&larr; blind A/B comparison</span>
-    └── <span class="file">analyzer.md</span>    <span class="cm">&larr; analyzes results</span>
+    ├── <span class="file">grader.md</span>      <span class="cm">&larr; evaluates assertions independently</span>
+    ├── <span class="file">comparator.md</span>  <span class="cm">&larr; blind A/B comparison, no prior bias</span>
+    └── <span class="file">analyzer.md</span>    <span class="cm">&larr; synthesizes all results</span>
+        </div>
+        <div class="code" style="font-size:11.5px;margin-top:10px;">
+<span class="cm">## Step 1: Grade Assertions</span>
+Read <span class="str">`agents/grader.md`</span> for grader persona.
+Spawn a subagent using that persona.
+Pass each assertion independently.
+Collect results before continuing.
+
+<span class="cm">## Step 2: Compare Outputs (blind)</span>
+Read <span class="str">`agents/comparator.md`</span>.
+Spawn subagent — pass both outputs
+without labels. Collect ranking + rationale.
+
+<span class="cm">## Step 3: Synthesize</span>
+Read <span class="str">`agents/analyzer.md`</span>.
+Spawn final subagent with all prior results.
+        </div>
+        <div class="tip" style="margin-top:10px;background:#f3e8ff;color:#6b21a8;border-color:#e9d5ff;">
+          <strong>Why isolation matters:</strong> Each subagent starts fresh — no context bleed between grading, comparing, and analyzing. This prevents earlier results from biasing later ones.
         </div>
       </div>
     </div>
@@ -374,7 +451,7 @@ Combine all outputs into one message.
       </div>
     </div>
 
-    <div class="callout">And finally — some quick heuristics to keep in your pocket.</div>
+    <div class="callout">Principles in place — now avoid the common traps.</div>
 
     <!-- ═══ STEP 5: DO vs DON'T ═══ -->
     <div class="arrow" style="--c:#dc2626;"></div>
@@ -390,6 +467,7 @@ Combine all outputs into one message.
           <li><strong>Write pushy descriptions</strong> — list every trigger phrase a user might say</li>
           <li><strong>Handle partial failure</strong> — orchestrators degrade gracefully, not catastrophically</li>
           <li><strong>Include input/output examples</strong> for non-obvious formats</li>
+          <li><strong>Add a TOC</strong> to reference files over 300 lines</li>
         </ul>
       </div>
       <div class="card dont-card">
@@ -400,7 +478,268 @@ Combine all outputs into one message.
           <li><strong>Don't hardcode context</strong> — avoid baking in names, dates, or values that change</li>
           <li><strong>Don't duplicate logic</strong> — extract shared steps into a sub-skill or reference</li>
           <li><strong>Don't litter with MUST/NEVER</strong> — explain the reasoning instead</li>
+          <li><strong>Don't make sub-skills parent-dependent</strong> — they must run standalone</li>
         </ul>
+      </div>
+    </div>
+
+    <div class="callout">Now let's tackle the #1 failure point: descriptions that don't trigger.</div>
+
+    <!-- ═══ STEP 6: DESCRIPTION WRITING ═══ -->
+    <div class="arrow" style="--c:#0891b2;"></div>
+    <div class="step" style="background:#0891b2;">Step 6 &mdash; Write Descriptions That Actually Trigger</div>
+    <div class="arrow" style="--c:#0891b2;"></div>
+
+    <div class="row">
+      <div class="card" style="flex:0.7;">
+        <h3>The Trigger Mechanism</h3>
+        <p style="margin-bottom:12px;">Claude scans all skill descriptions on every turn to decide which skill (if any) to fire. The description is your <strong>only</strong> lever for controlling when your skill runs. Claude matches on meaning, not keywords — but coverage matters.</p>
+        <div class="tip" style="background:#ecfeff;color:#164e63;border-color:#a5f3fc;">
+          <strong>Mental model:</strong> Write your description as if briefing a smart colleague who has never seen your skill. What would they need to know to recognize when to use it?
+        </div>
+        <p style="margin-top:14px;margin-bottom:8px;">A strong description has three parts:</p>
+        <ul>
+          <li><strong>What it does</strong> — one crisp sentence</li>
+          <li><strong>Trigger phrases</strong> — exact things the user might say</li>
+          <li><strong>Edge cases</strong> — non-obvious situations where it should still fire</li>
+        </ul>
+        <div class="tip" style="margin-top:14px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
+          <strong>Over-triggering fix:</strong> If your skill fires too broadly, add exclusion notes — "use for X, not for Y" helps Claude discriminate between similar skills.
+        </div>
+      </div>
+
+      <div class="card" style="flex:1.3;">
+        <h3>Before &amp; After</h3>
+        <table class="compare-table">
+          <thead>
+            <tr>
+              <th style="background:#fff5f5;color:#991b1b;width:35%;">Weak Description</th>
+              <th style="background:#f0fdf4;color:#14532d;width:40%;">Strong Description</th>
+              <th style="background:#fafaf7;color:#666;width:25%;">Why It Matters</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="bad-col">"A helpful skill for doing tasks with data"</td>
+              <td class="good-col">"Run full data pipeline analysis. Use when user says 'analyze data', 'run the pipeline', 'check the data', 'data report', or mentions wanting a data summary."</td>
+              <td class="why-col">Vague descriptions almost never trigger. Claude needs enough signal to match intent.</td>
+            </tr>
+            <tr>
+              <td class="bad-col">"Helps with email"</td>
+              <td class="good-col">"Triage Gmail inbox for action items. Use when user says 'triage inbox', 'check my email', 'what emails need replies', 'clear my inbox', or asks what's waiting on them."</td>
+              <td class="why-col">Concrete trigger phrases dramatically increase coverage — users rarely say exactly what you expect.</td>
+            </tr>
+            <tr>
+              <td class="bad-col">"Morning routine skill"</td>
+              <td class="good-col">"Run full morning prep: calendar, inbox, and Slack. Use when user says 'daily prep', 'start my day', 'morning briefing', 'what's on my plate today', or asks where to begin. Also fires if user is starting work and asks what needs attention."</td>
+              <td class="why-col">Edge cases expand the net — "where do I begin?" is a valid trigger that a narrow description misses.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout">Great description? Now make sure the whole skill actually works.</div>
+
+    <!-- ═══ STEP 7: TESTING & DEBUGGING ═══ -->
+    <div class="arrow" style="--c:#b45309;"></div>
+    <div class="step" style="background:#b45309;">Step 7 &mdash; Test &amp; Debug Your Skill</div>
+    <div class="arrow" style="--c:#b45309;"></div>
+
+    <div class="row">
+      <div class="card" style="flex:1;">
+        <h3>Testing Methodology</h3>
+        <p style="margin-bottom:14px;">Skills need a test loop like any other code. For each skill, maintain a small set of test prompts in <code>evals/</code> that covers triggering, execution, and output format.</p>
+        <div class="file-tree" style="font-size:12px;padding:14px 18px;">
+<span class="dir">my-skill/</span>
+└── <span class="dir">evals/</span>
+    └── <span class="file">test_cases.md</span>
+
+<span class="cm"># Trigger Tests</span>
+<span class="cm">- "run the pipeline"         → should fire</span>
+<span class="cm">- "analyze this data"        → should fire</span>
+<span class="cm">- "what's 2+2"               → should NOT fire</span>
+
+<span class="cm"># Execution Tests</span>
+<span class="cm">- does each step complete?</span>
+<span class="cm">- does it handle missing inputs?</span>
+
+<span class="cm"># Output Tests</span>
+<span class="cm">- does output match the template?</span>
+<span class="cm">- does it degrade gracefully on failure?</span>
+        </div>
+        <p style="margin-top:12px;font-size:12.5px;color:#444;"><strong>Test sub-skills independently</strong> before testing the orchestrator. A broken sub-skill is much harder to diagnose from inside a chain.</p>
+        <div class="tip" style="margin-top:10px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
+          <strong>Iteration loop:</strong> Edit description &rarr; test trigger &rarr; edit body &rarr; test execution &rarr; edit output format &rarr; test output. Don't skip steps.
+        </div>
+      </div>
+
+      <div class="card" style="flex:1;">
+        <h3>Debugging Under-Triggering</h3>
+        <p style="margin-bottom:14px;">If your skill isn't firing when it should, work through this sequence:</p>
+
+        <div class="debug-step">
+          <div class="debug-num">1</div>
+          <div>
+            <p style="font-weight:600;font-size:13.5px;">Check description coverage</p>
+            <p style="font-size:12.5px;color:#666;">Does your description include the actual phrase the user said? Add synonyms and alternate phrasings explicitly.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="debug-num">2</div>
+          <div>
+            <p style="font-weight:600;font-size:13.5px;">Check for ambiguity with other skills</p>
+            <p style="font-size:12.5px;color:#666;">If two skills could match the same phrase, Claude picks one. Make each description distinct — overlap causes misfires.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="debug-num">3</div>
+          <div>
+            <p style="font-weight:600;font-size:13.5px;">Add the missed phrase explicitly</p>
+            <p style="font-size:12.5px;color:#666;">If the user's phrasing was reasonable but not covered, add it to the description. Don't rely on Claude to infer it.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="debug-num">4</div>
+          <div>
+            <p style="font-weight:600;font-size:13.5px;">Check SKILL.md body length</p>
+            <p style="font-size:12.5px;color:#666;">A skill over 500 lines may load slowly or incompletely. Profile which sections are heavy and offload into references.</p>
+          </div>
+        </div>
+        <div class="debug-step">
+          <div class="debug-num" style="background:#d97706;">5</div>
+          <div>
+            <p style="font-weight:600;font-size:13.5px;">Check sub-skill outputs</p>
+            <p style="font-size:12.5px;color:#666;">If the skill fires but produces wrong output, run each sub-skill in isolation. Identify exactly which step is failing before editing the orchestrator.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">Skill works? Now unlock the next level with hooks and memory.</div>
+
+    <!-- ═══ STEP 8: POWER PATTERNS ═══ -->
+    <div class="arrow" style="--c:#7c3aed;"></div>
+    <div class="step" style="background:#7c3aed;">Step 8 &mdash; Power Patterns: Hooks &amp; Memory</div>
+    <div class="arrow" style="--c:#7c3aed;"></div>
+
+    <div class="row">
+      <div class="card">
+        <h3>Hooks: Automated Behaviors</h3>
+        <p style="margin-bottom:12px;">Skills trigger on user intent. <strong>Hooks</strong> trigger on system events — before/after tool calls, on session start, etc. Together they unlock always-on behaviors that don't require the user to ask.</p>
+        <div class="code" style="font-size:11.5px;">
+<span class="cm"># settings.json — hook configuration</span>
+{
+  <span class="str">"hooks"</span>: {
+    <span class="str">"PreToolUse"</span>: [{
+      <span class="str">"matcher"</span>: <span class="str">"Bash"</span>,
+      <span class="str">"hooks"</span>: [{
+        <span class="str">"type"</span>: <span class="str">"command"</span>,
+        <span class="str">"command"</span>: <span class="str">"echo 'Running bash command'"</span>
+      }]
+    }],
+    <span class="str">"PostToolUse"</span>: [{
+      <span class="str">"matcher"</span>: <span class="str">"Write"</span>,
+      <span class="str">"hooks"</span>: [{
+        <span class="str">"type"</span>: <span class="str">"command"</span>,
+        <span class="str">"command"</span>: <span class="str">"./scripts/lint.sh"</span>
+      }]
+    }]
+  }
+}
+        </div>
+        <p style="margin-top:12px;font-size:12.5px;"><strong>Skill + Hook combo:</strong> Use a skill for the core workflow, and a hook to enforce pre/post conditions automatically. Example: a <code>deploy</code> skill paired with a PostToolUse hook that always runs your test suite after any file write.</p>
+        <div class="tip" style="margin-top:10px;background:#f5f3ff;color:#4c1d95;border-color:#ddd6fe;">
+          <strong>When user says "from now on, whenever X"</strong> — that's a hook, not a skill. Use the <code>update-config</code> skill to wire it into settings.json so the harness enforces it automatically — not Claude's memory, which resets between sessions.
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Memory: Cross-Session Persistence</h3>
+        <p style="margin-bottom:12px;">Skills are stateless — each invocation starts fresh. <strong>Memory</strong> is the bridge across sessions. Skills can explicitly read and write memory files to maintain state between conversations.</p>
+        <div class="code" style="font-size:11.5px;">
+<span class="cm">## Step 5: Save State (end of skill)</span>
+Write a memory entry for anything that
+should persist beyond this session:
+
+- Decisions made + rationale this run
+- User preferences observed
+- Next steps to pick up on next session
+- Pointers to external resources found
+
+<span class="cm"># Memory file format</span>
+<span class="cm">---</span>
+<span class="kw">name</span>: pipeline-decisions
+<span class="kw">description</span>: <span class="str">Key decisions from last run</span>
+<span class="kw">type</span>: project
+<span class="cm">---</span>
+[content here]
+        </div>
+        <p style="margin-top:12px;font-size:12.5px;"><strong>Four memory types</strong> your skill can write:</p>
+        <ul style="margin-top:8px;">
+          <li><strong>user</strong> — role, preferences, expertise level</li>
+          <li><strong>project</strong> — goals, deadlines, key decisions</li>
+          <li><strong>feedback</strong> — corrections and validated approaches</li>
+          <li><strong>reference</strong> — pointers to external systems</li>
+        </ul>
+        <div class="tip" style="margin-top:12px;background:#f5f3ff;color:#4c1d95;border-color:#ddd6fe;">
+          <strong>What NOT to save:</strong> code patterns, file paths, git history, or ephemeral task state. Memory is for non-obvious facts that won't be derivable from reading the codebase later.
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">Last step — make sure you're reaching for the right tool in the first place.</div>
+
+    <!-- ═══ STEP 9: RIGHT TOOL ═══ -->
+    <div class="arrow" style="--c:#0f766e;"></div>
+    <div class="step" style="background:#0f766e;">Step 9 &mdash; Choose the Right Tool</div>
+    <div class="arrow" style="--c:#0f766e;"></div>
+
+    <div style="width:100%;max-width:1000px;">
+      <div class="card">
+        <h3>Skill vs. Hook vs. CLAUDE.md vs. Just a Prompt</h3>
+        <p style="margin-bottom:14px;">Skills are powerful but not always the right choice. Use this table to make the call before you start building.</p>
+        <table class="decision-table">
+          <thead>
+            <tr>
+              <th>Situation</th>
+              <th>Right tool</th>
+              <th>Why</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Multi-step workflow triggered by user intent</strong><br><span style="font-size:12px;color:#666;">"triage my inbox", "run daily prep", "prep me for my call"</span></td>
+              <td><span class="tag" style="background:#fef3c7;color:#92400e;">Skill</span></td>
+              <td style="font-size:12.5px;">Skills are built for intent-triggered workflows. The description controls when it fires; the body controls what it does.</td>
+            </tr>
+            <tr>
+              <td><strong>Always-on behavior tied to a system event</strong><br><span style="font-size:12px;color:#666;">"after every file write, run lint", "log every bash command"</span></td>
+              <td><span class="tag" style="background:#f3e8ff;color:#6b21a8;">Hook</span></td>
+              <td style="font-size:12.5px;">Hooks fire on tool events, not user intent. Enforced by the harness — no user prompt needed, and no risk of Claude forgetting between sessions.</td>
+            </tr>
+            <tr>
+              <td><strong>Standing instruction that should always apply</strong><br><span style="font-size:12px;color:#666;">"always respond in Spanish", "never commit without asking first"</span></td>
+              <td><span class="tag" style="background:#dcfce7;color:#14532d;">CLAUDE.md</span></td>
+              <td style="font-size:12.5px;">CLAUDE.md is always loaded into context. Use it for instructions that should shape every response in the project — not just when a skill fires.</td>
+            </tr>
+            <tr>
+              <td><strong>One-off task with no reuse value</strong><br><span style="font-size:12px;color:#666;">"rename all these files", "summarize this document"</span></td>
+              <td><span class="tag" style="background:#e0f2fe;color:#075985;">Just prompt</span></td>
+              <td style="font-size:12.5px;">Don't build a skill for every task. If you'll only do it once and there's no complex workflow to encode, a direct prompt is faster and simpler.</td>
+            </tr>
+            <tr>
+              <td><strong>Repeated workflow with variable inputs each time</strong><br><span style="font-size:12px;color:#666;">"analyze this dataset", "prep me for this specific call"</span></td>
+              <td><span class="tag" style="background:#fef3c7;color:#92400e;">Skill</span></td>
+              <td style="font-size:12.5px;">Skills handle variability well — they read current context rather than relying on hardcoded values. Right fit when the workflow is stable but the inputs change.</td>
+            </tr>
+            <tr>
+              <td><strong>Workflow that needs automatic enforcement too</strong><br><span style="font-size:12px;color:#666;">"run tests after every deploy", "validate schema after every write"</span></td>
+              <td><span class="tag" style="background:#fef3c7;color:#92400e;">Skill</span> + <span class="tag" style="background:#f3e8ff;color:#6b21a8;">Hook</span></td>
+              <td style="font-size:12.5px;">Compose them. The skill handles the intentional workflow; the hook handles enforcement that should happen regardless of which code path triggered the file write.</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
@@ -409,19 +748,23 @@ Combine all outputs into one message.
     <div class="stickies">
       <div class="sticky" style="background:#fef9c3;--r:-1.2deg;">
         <b>Scripts</b>
-        If all test runs independently write the same helper script, bundle it in <code>scripts/</code>. Save every future run from reinventing the wheel.
+        If subagents keep writing the same helper script from scratch, bundle it in <code>scripts/</code>. It costs zero context tokens and every future run benefits.
       </div>
       <div class="sticky" style="background:#dbeafe;--r:0.8deg;">
         <b>Large References</b>
-        For reference files over 300 lines, include a table of contents at the top so Claude can navigate efficiently.
+        For reference files over 300 lines, add a table of contents at the top so Claude can navigate efficiently without reading the whole thing.
       </div>
       <div class="sticky" style="background:#dcfce7;--r:-0.5deg;">
         <b>Error Handling</b>
-        If a sub-skill fails, still run the others. Note the failure in output. A partial result beats no result.
+        If a sub-skill fails, still run the others. Note the failure in output. A partial result beats no result — design orchestrators to degrade gracefully.
       </div>
       <div class="sticky" style="background:#fce7f3;--r:1.5deg;">
         <b>Triggering</b>
-        Under-triggering is the #1 skill problem. Be aggressive with description phrases — cast a wide net.
+        Under-triggering is the #1 skill problem. Cast a wide net with trigger phrases, then use exclusion notes to narrow if needed.
+      </div>
+      <div class="sticky" style="background:#f3e8ff;--r:-0.8deg;">
+        <b>Memory vs. State</b>
+        Don't save ephemeral task state to memory. Memory is for non-obvious, durable facts — things that won't be derivable from reading the code or git history later.
       </div>
     </div>
 
@@ -430,7 +773,7 @@ Combine all outputs into one message.
     <div style="width:100%;max-width:1000px;">
       <div class="card" style="border:2px dashed #d97706;background:#fffbeb;">
         <h3 style="color:#92400e;margin-bottom:14px;">Quick-Reference Cheat Sheet</h3>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:24px;">
           <div>
             <p style="font-weight:700;font-size:13px;margin-bottom:6px;color:#d97706;">Sizing</p>
             <p style="font-size:12.5px;line-height:1.7;">
@@ -459,6 +802,16 @@ Combine all outputs into one message.
               &#10003; Capture each sub-skill's output<br>
               &#10003; Handle partial failures gracefully<br>
               &#10003; Assemble and deliver final result
+            </p>
+          </div>
+          <div>
+            <p style="font-weight:700;font-size:13px;margin-bottom:6px;color:#0f766e;">Right Tool</p>
+            <p style="font-size:12.5px;line-height:1.7;">
+              <strong>Intent-triggered:</strong> Skill<br>
+              <strong>Event-triggered:</strong> Hook<br>
+              <strong>Always applies:</strong> CLAUDE.md<br>
+              <strong>One-off:</strong> Just prompt<br>
+              <strong>Both:</strong> Skill + Hook
             </p>
           </div>
         </div>
