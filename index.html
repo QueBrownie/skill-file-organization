@@ -35,14 +35,42 @@
   .header h1 { font-size: 16px; font-weight: 600; color: #333; }
   .header .sub { font-size: 12px; color: #888; margin-left: auto; }
 
+  /* ── Mode Toggle ── */
+  .mode-bar {
+    display: flex; justify-content: center; padding: 24px 32px 0;
+  }
+  .mode-toggle {
+    display: inline-flex;
+    background: #e8e8e0; border-radius: 40px; padding: 5px;
+    gap: 4px; box-shadow: inset 0 1px 3px rgba(0,0,0,.08);
+  }
+  .mode-btn {
+    padding: 10px 28px; border-radius: 32px; border: none; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    transition: all .2s ease; color: #888; background: transparent;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .mode-btn .icon { font-size: 16px; }
+  .mode-btn.active {
+    background: #fff; color: #1a1a1a;
+    box-shadow: 0 1px 4px rgba(0,0,0,.12), 0 2px 8px rgba(0,0,0,.06);
+  }
+  .mode-btn.active.simple-btn { color: #059669; }
+  .mode-btn.active.deep-btn { color: #d97706; }
+  .mode-label {
+    text-align: center; margin-top: 10px; font-size: 12px; color: #aaa;
+    font-style: italic;
+  }
+
   /* ── Board & Spine ── */
-  .board { max-width: 1200px; margin: 0 auto; padding: 48px 32px 80px; }
+  .board { max-width: 1200px; margin: 0 auto; padding: 32px 32px 80px; }
   .spine { display: flex; flex-direction: column; align-items: center; }
 
   /* ── Hero ── */
   .hero { text-align: center; margin-bottom: 24px; }
   .hero h2 { font-size: 38px; font-weight: 800; line-height: 1.15; }
   .hero h2 span { color: #d97706; }
+  .hero h2 span.green { color: #059669; }
   .hero p { font-size: 16px; color: #666; max-width: 620px; margin: 10px auto 0; line-height: 1.6; }
 
   /* ── Arrows & Badges ── */
@@ -74,6 +102,10 @@
   }
   .card h3 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
   .card p, .card li { font-size: 13.5px; line-height: 1.65; color: #444; }
+
+  /* ── Simple mode card overrides ── */
+  .simple-card h3 { font-size: 20px; margin-bottom: 12px; }
+  .simple-card p, .simple-card li { font-size: 15px; line-height: 1.8; }
 
   /* ── Layout helpers ── */
   .row { display: flex; gap: 24px; width: 100%; max-width: 1000px; align-items: stretch; }
@@ -107,6 +139,58 @@
   .code .kw { color: #9333ea; font-weight: 600; }
   .code .str { color: #16a34a; }
   .code .cm { color: #999; font-weight: 500; }
+
+  /* ── Simple code block (friendlier) ── */
+  .simple-code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; line-height: 2; white-space: pre;
+    background: #f0fdf4; color: #14532d;
+    border: 2px solid #bbf7d0; border-radius: 12px;
+    padding: 20px 24px; margin-top: 12px; overflow-x: auto;
+  }
+  .simple-code .label { color: #059669; font-weight: 700; }
+  .simple-code .val { color: #1e40af; }
+  .simple-code .cm { color: #6b7280; }
+
+  /* ── Analogy box ── */
+  .analogy {
+    background: #fffbeb; border: 2px solid #fde68a; border-radius: 12px;
+    padding: 18px 20px; margin-top: 14px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .analogy .emoji { font-size: 24px; flex-shrink: 0; }
+  .analogy p { font-size: 14px; line-height: 1.65; color: #78350f; margin: 0; }
+  .analogy strong { color: #92400e; }
+
+  /* ── Step number circles (simple mode) ── */
+  .simple-steps { display: flex; flex-direction: column; gap: 16px; margin-top: 14px; }
+  .simple-step { display: flex; gap: 16px; align-items: flex-start; }
+  .simple-num {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff; background: #059669;
+  }
+  .simple-step-body { flex: 1; }
+  .simple-step-body strong { font-size: 14.5px; display: block; margin-bottom: 3px; color: #1a1a1a; }
+  .simple-step-body p { font-size: 13.5px; color: #555; margin: 0; line-height: 1.6; }
+
+  /* ── Trigger phrase chips ── */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+  .chip {
+    background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe;
+    border-radius: 20px; padding: 5px 14px; font-size: 13px; font-weight: 500;
+  }
+  .chip.bad { background: #fff5f5; color: #991b1b; border-color: #fecaca; }
+
+  /* ── Big tip box ── */
+  .big-tip {
+    background: #f0fdf4; border: 2px solid #bbf7d0; border-radius: 14px;
+    padding: 20px 24px; width: 100%; max-width: 1000px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .big-tip .tip-icon { font-size: 28px; flex-shrink: 0; }
+  .big-tip h4 { font-size: 16px; font-weight: 700; color: #065f46; margin-bottom: 6px; }
+  .big-tip p { font-size: 14px; color: #064e3b; line-height: 1.65; margin: 0; }
 
   /* ── Orchestration diagram ── */
   .orch { display: flex; flex-direction: column; align-items: center; padding: 16px 0; }
@@ -191,8 +275,15 @@
     content: ''; position: absolute; left: 0; top: 8px;
     width: 7px; height: 7px; border-radius: 50%; background: #d97706;
   }
+  .simple-card ul li::before { background: #059669; }
 
   .footer { text-align: center; padding: 48px 0 20px; color: #aaa; font-size: 12px; }
+
+  /* ── Mode visibility ── */
+  .mode-simple { display: none; }
+  .mode-deep { display: flex; flex-direction: column; align-items: center; }
+  body.show-simple .mode-simple { display: flex; flex-direction: column; align-items: center; }
+  body.show-simple .mode-deep { display: none; }
 
   @media (max-width: 800px) {
     .row, .three { flex-direction: column; }
@@ -205,17 +296,233 @@
 
 <div class="header">
   <div class="logo">S</div>
-  <h1>Skill Architecture — Large Orchestration Guide</h1>
+  <h1>Skill Architecture — Claude Skills Guide</h1>
   <span class="sub">Claude Skills &middot; Best Practices</span>
 </div>
 
-<div class="board">
-  <div class="hero">
-    <h2>Organizing Skill Files for<br><span>Large Orchestration</span></h2>
-    <p>Follow the flow: structure &rarr; loading &rarr; orchestration &rarr; principles &rarr; pitfalls &rarr; descriptions &rarr; testing &rarr; power patterns &rarr; right tool. Each step builds on the last.</p>
+<!-- ── Mode Toggle ── -->
+<div class="mode-bar">
+  <div>
+    <div class="mode-toggle">
+      <button class="mode-btn simple-btn active" onclick="setMode('simple')">
+        <span class="icon">&#x1F331;</span> Simple
+      </button>
+      <button class="mode-btn deep-btn" onclick="setMode('deep')">
+        <span class="icon">&#x1F9E0;</span> In Depth
+      </button>
+    </div>
+    <div class="mode-label" id="mode-label">New to Claude? Start here.</div>
   </div>
+</div>
 
-  <div class="spine">
+<div class="board">
+
+  <!-- ════════════════════════════════════════════
+       SIMPLE MODE
+  ════════════════════════════════════════════ -->
+  <div class="spine mode-simple">
+
+    <div class="hero" style="margin-top:24px;">
+      <h2>Teaching Claude to<br><span class="green">Remember How to Help You</span></h2>
+      <p>Skills are like saved recipes for Claude. You write one once, and from then on Claude knows exactly what to do whenever you ask.</p>
+    </div>
+
+    <!-- S1: What is a skill -->
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">What is a Skill?</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card">
+        <h3>Think of it like a recipe</h3>
+        <p>A skill is a set of instructions you write for Claude, saved in a file. Whenever you say something that matches the skill, Claude reads those instructions and follows them — every time, consistently.</p>
+        <div class="analogy">
+          <span class="emoji">&#x1F4CB;</span>
+          <p>Without a skill: you explain what you want from scratch every conversation.<br><strong>With a skill:</strong> you say "triage my inbox" and Claude already knows exactly what to do.</p>
+        </div>
+      </div>
+      <div class="card simple-card">
+        <h3>What can you make a skill do?</h3>
+        <p>Anything you find yourself asking Claude to do repeatedly. Some examples:</p>
+        <ul style="margin-top:10px;">
+          <li>Check your email and surface what needs replies</li>
+          <li>Summarize your Slack channels each morning</li>
+          <li>Prep you before a sales or client call</li>
+          <li>Write a weekly status report from your notes</li>
+          <li>Review code before it goes out</li>
+        </ul>
+        <div class="analogy" style="margin-top:14px;">
+          <span class="emoji">&#x1F4A1;</span>
+          <p>If you've copy-pasted the same instructions to Claude more than twice, that's a skill waiting to be written.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">Ready to make one? Here's all you need.</div>
+
+    <!-- S2: How to create -->
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">How to Create Your First Skill</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card">
+        <h3>You only need one file</h3>
+        <p>A skill lives in a folder with a single required file called <strong>SKILL.md</strong>. That's it. The file has two parts — a short header at the top, and your instructions below.</p>
+        <div class="simple-code">
+<span class="cm">--- (this marks the start of the header)</span>
+<span class="label">name</span>: inbox-triage
+<span class="label">description</span>: <span class="val">Check my Gmail and surface</span>
+  <span class="val">what needs replies. Use when</span>
+  <span class="val">I say "triage inbox", "check</span>
+  <span class="val">email", or "what needs replies".</span>
+<span class="cm">--- (this marks the end of the header)</span>
+
+<span class="cm">Your instructions go here.</span>
+<span class="cm">Write them like you're explaining</span>
+<span class="cm">the job to a smart helper.</span>
+
+Step 1: Open Gmail and find unread emails.
+Step 2: For each one, decide if it needs
+        a reply, follow-up, or can be skipped.
+Step 3: Show me a summary with the most
+        urgent items first.
+        </div>
+      </div>
+      <div class="card simple-card">
+        <h3>Writing good instructions</h3>
+        <p>Claude is smart — you don't need to be super precise. Write your instructions the way you'd explain the job to a new but capable colleague.</p>
+        <div class="simple-steps">
+          <div class="simple-step">
+            <div class="simple-num">1</div>
+            <div class="simple-step-body">
+              <strong>Say what the goal is</strong>
+              <p>What should Claude accomplish by the end? Start there.</p>
+            </div>
+          </div>
+          <div class="simple-step">
+            <div class="simple-num">2</div>
+            <div class="simple-step-body">
+              <strong>Break it into steps</strong>
+              <p>Number them. Claude follows numbered steps reliably.</p>
+            </div>
+          </div>
+          <div class="simple-step">
+            <div class="simple-num">3</div>
+            <div class="simple-step-body">
+              <strong>Describe what "done" looks like</strong>
+              <p>Tell Claude what the output should look like — a list, a summary, a message draft, etc.</p>
+            </div>
+          </div>
+          <div class="simple-step">
+            <div class="simple-num">4</div>
+            <div class="simple-step-body">
+              <strong>Explain the why, not just the what</strong>
+              <p>Instead of "always flag emails from VPs", say "flag emails from VPs because they usually need same-day replies."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">The most important part: making it trigger.</div>
+
+    <!-- S3: Making it trigger -->
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Making Your Skill Trigger</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card">
+        <h3>The description is the trigger</h3>
+        <p>The <strong>description</strong> in your skill's header is how Claude decides when to use it. Claude reads your description and asks: "does this match what the user is asking for?"</p>
+        <p style="margin-top:10px;">The more trigger phrases you include, the more reliably it fires. List the different ways you might ask for the same thing.</p>
+        <div class="analogy">
+          <span class="emoji">&#x1F50D;</span>
+          <p><strong>The #1 reason skills don't work</strong> is a vague description. Claude can't read your mind — it can only match what you wrote.</p>
+        </div>
+      </div>
+      <div class="card simple-card">
+        <h3>What good trigger phrases look like</h3>
+        <p style="margin-bottom:10px;">These are too vague:</p>
+        <div class="chips">
+          <span class="chip bad">"helps with email"</span>
+          <span class="chip bad">"morning tasks"</span>
+          <span class="chip bad">"useful for calls"</span>
+        </div>
+        <p style="margin-top:14px;margin-bottom:10px;">These will actually trigger:</p>
+        <div class="chips">
+          <span class="chip">"triage my inbox"</span>
+          <span class="chip">"check my email"</span>
+          <span class="chip">"what needs replies"</span>
+          <span class="chip">"clear my inbox"</span>
+          <span class="chip">"what's waiting on me"</span>
+        </div>
+        <div class="analogy" style="margin-top:14px;">
+          <span class="emoji">&#x270D;</span>
+          <p>Think about all the different ways you might ask for this on a busy morning. List all of them in your description.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">That's the core of it. A few quick tips to make yours great.</div>
+
+    <!-- S4: Tips -->
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Quick Tips for Better Skills</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card do-card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;color:#16a34a;">Do This</div>
+        <ul>
+          <li><strong>One skill, one job.</strong> Don't try to cram everything into one skill. A focused skill works better than a sprawling one.</li>
+          <li><strong>Test it right after writing.</strong> Ask Claude in a few different ways. If it doesn't fire, add more phrases to the description.</li>
+          <li><strong>Say "done" clearly.</strong> Tell Claude what the final output should look like — a bullet list, a Slack message, a summary table, etc.</li>
+          <li><strong>Update it when your process changes.</strong> Skills aren't set-and-forget. If you start doing things differently, update the steps.</li>
+        </ul>
+      </div>
+      <div class="card simple-card dont-card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;color:#dc2626;">Avoid This</div>
+        <ul>
+          <li><strong>Vague descriptions.</strong> "A skill for morning tasks" won't fire. Be specific about what triggers it.</li>
+          <li><strong>Hardcoding things that change.</strong> Don't write "check emails from John" — John might leave. Write "check emails from my manager."</li>
+          <li><strong>Instructions that contradict each other.</strong> If step 3 says one thing and step 7 says the opposite, Claude will guess. Pick one.</li>
+          <li><strong>Too many rules without reasons.</strong> "Always do X" is weaker than "Always do X because Y." The reason helps Claude apply it correctly.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- S5: Stickies -->
+    <div style="height:36px;"></div>
+    <div class="stickies">
+      <div class="sticky" style="background:#dcfce7;--r:-1.2deg;">
+        <b>First skill idea</b>
+        What's something you've explained to Claude more than twice? That's your first skill. Start there, not with something complex.
+      </div>
+      <div class="sticky" style="background:#dbeafe;--r:0.8deg;">
+        <b>Not triggering?</b>
+        Open your SKILL.md and add more phrases to the description. That's almost always the fix.
+      </div>
+      <div class="sticky" style="background:#fef9c3;--r:-0.5deg;">
+        <b>Ready to go deeper?</b>
+        Switch to "In Depth" mode above to learn about chaining skills together, debugging, automation, and more.
+      </div>
+    </div>
+
+    <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+  </div><!-- end mode-simple -->
+
+
+  <!-- ════════════════════════════════════════════
+       IN DEPTH MODE
+  ════════════════════════════════════════════ -->
+  <div class="spine mode-deep">
+
+    <div class="hero" style="margin-top:24px;">
+      <h2>Organizing Skill Files for<br><span>Large Orchestration</span></h2>
+      <p>Follow the flow: structure &rarr; loading &rarr; orchestration &rarr; principles &rarr; pitfalls &rarr; descriptions &rarr; testing &rarr; power patterns &rarr; right tool. Each step builds on the last.</p>
+    </div>
 
     <!-- ═══ STEP 1: ANATOMY ═══ -->
     <div class="arrow"></div>
@@ -818,9 +1125,34 @@ should persist beyond this session:
       </div>
     </div>
 
-  </div>
+    <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+  </div><!-- end mode-deep -->
 
-  <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
-</div>
+</div><!-- end board -->
+
+<script>
+  function setMode(mode) {
+    const body = document.body;
+    const simpleBtn = document.querySelector('.simple-btn');
+    const deepBtn = document.querySelector('.deep-btn');
+    const label = document.getElementById('mode-label');
+
+    if (mode === 'simple') {
+      body.classList.add('show-simple');
+      simpleBtn.classList.add('active');
+      deepBtn.classList.remove('active');
+      label.textContent = 'New to Claude? Start here.';
+    } else {
+      body.classList.remove('show-simple');
+      deepBtn.classList.add('active');
+      simpleBtn.classList.remove('active');
+      label.textContent = 'For power users and skill architects.';
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Default to simple mode
+  document.body.classList.add('show-simple');
+</script>
 </body>
 </html>
