@@ -285,6 +285,40 @@
   body.show-simple .mode-simple { display: flex; flex-direction: column; align-items: center; }
   body.show-simple .mode-deep { display: none; }
 
+  /* ── Page Nav ── */
+  .page-nav {
+    display: flex; justify-content: center;
+    border-bottom: 2px solid #e0e0d8;
+    background: rgba(245,245,240,0.97);
+    padding: 0 32px;
+    position: sticky; top: 65px; z-index: 90;
+    gap: 4px;
+  }
+  .page-tab {
+    padding: 13px 26px; border: none; background: transparent; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    color: #888; border-bottom: 3px solid transparent;
+    margin-bottom: -2px; transition: color .15s, border-color .15s;
+    display: flex; align-items: center; gap: 7px;
+  }
+  .page-tab.active { color: #d97706; border-bottom-color: #d97706; }
+  .page-tab:hover:not(.active) { color: #555; }
+
+  /* ── Page visibility ── */
+  .page-svp { display: none; }
+  body.show-svp .page-svp { display: block; }
+  body.show-svp .page-arch { display: none; }
+
+  /* ── SVP comparison table ── */
+  .svp-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 14px; }
+  .svp-table th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
+  .svp-table th.skills-col { background: #fffbeb; color: #92400e; }
+  .svp-table th.proj-col   { background: #eff6ff; color: #1e40af; }
+  .svp-table th.dim-col    { background: #fafaf7; color: #666; }
+  .svp-table td { padding: 10px 16px; border-top: 1px solid #f0ede6; vertical-align: top; line-height: 1.55; color: #444; }
+  .svp-table td.skills-col { background: rgba(255,251,235,.35); }
+  .svp-table td.proj-col   { background: rgba(239,246,255,.35); }
+
   @media (max-width: 800px) {
     .row, .three { flex-direction: column; }
     .stickies { flex-direction: column; align-items: center; }
@@ -296,9 +330,21 @@
 
 <div class="header">
   <div class="logo">S</div>
-  <h1>Skill Architecture — Claude Skills Guide</h1>
+  <h1>Claude Skills Guide</h1>
   <span class="sub">Claude Skills &middot; Best Practices</span>
 </div>
+
+<!-- ── Page Nav ── -->
+<nav class="page-nav">
+  <button class="page-tab active" id="tab-arch" onclick="setPage('arch')">
+    &#x1F5C2;&#xFE0F; Skill Architecture
+  </button>
+  <button class="page-tab" id="tab-svp" onclick="setPage('svp')">
+    &#x2696;&#xFE0F; Skills vs Projects
+  </button>
+</nav>
+
+<div id="page-arch" class="page-arch">
 
 <!-- ── Mode Toggle ── -->
 <div class="mode-bar">
@@ -1129,6 +1175,312 @@ should persist beyond this session:
   </div><!-- end mode-deep -->
 
 </div><!-- end board -->
+</div><!-- end page-arch -->
+
+
+<!-- ════════════════════════════════════════
+     PAGE: SKILLS VS PROJECTS
+════════════════════════════════════════ -->
+<div id="page-svp" class="page-svp">
+<div class="board">
+
+  <!-- ════ SIMPLE MODE ════ -->
+  <div class="spine mode-simple">
+
+    <div class="hero" style="margin-top:24px;">
+      <h2>Skills or Projects?<br><span class="green">Here's How to Choose</span></h2>
+      <p>Both help Claude work better for you. Skills teach Claude <em>how to do</em> something. Projects give Claude something to <em>know</em>. Once you see the difference, it's obvious when to use which.</p>
+    </div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">What's the Difference?</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card" style="border-top:4px solid #d97706;">
+        <h3>&#x1F4CB; A Skill is a Playbook</h3>
+        <p>A skill is a saved set of steps — a workflow Claude follows every time you trigger it. It answers: <strong>"How should Claude do this?"</strong></p>
+        <div class="analogy">
+          <span class="emoji">&#x1F4CB;</span>
+          <p><strong>Like an SOP.</strong> You write the steps once. Any time you say "prep me for my call," Claude runs the same checklist — every time.</p>
+        </div>
+        <ul style="margin-top:12px;">
+          <li>Lives in Claude Code (<code>.claude/skills/</code>)</li>
+          <li>Fires when you say the right phrase</li>
+          <li>Contains step-by-step workflow instructions</li>
+          <li>Best for things you do repeatedly</li>
+        </ul>
+      </div>
+      <div class="card simple-card" style="border-top:4px solid #3b82f6;">
+        <h3>&#x1F4DA; A Project is a Knowledge Base</h3>
+        <p>A Project (in Claude.ai) is a workspace that gives Claude background knowledge — always active for every conversation you have there. It answers: <strong>"What should Claude know?"</strong></p>
+        <div class="analogy">
+          <span class="emoji">&#x1F4DA;</span>
+          <p><strong>Like an onboarding folder.</strong> Load in your product docs, tone guidelines, and FAQs once. Claude knows them in every conversation in that project.</p>
+        </div>
+        <ul style="margin-top:12px;">
+          <li>Lives in Claude.ai workspace</li>
+          <li>Active for every conversation in the project</li>
+          <li>Contains uploaded docs + a system prompt</li>
+          <li>Best for domain knowledge &amp; persistent context</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">Not sure which to reach for? Here are three quick scenarios.</div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Quick Decision Guide</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="card simple-card" style="width:100%;max-width:760px;">
+      <table class="decision-table" style="font-size:14px;">
+        <thead>
+          <tr>
+            <th style="width:58%">When you want Claude to…</th>
+            <th>Use this</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Follow the same steps every time ("triage my inbox", "prep me for my call")</td>
+            <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">&#x1F4CB; Skill</span></td>
+          </tr>
+          <tr>
+            <td>Always know your product, company context, or domain — without you re-explaining it</td>
+            <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">&#x1F4DA; Project</span></td>
+          </tr>
+          <tr>
+            <td>Have both: structured workflows AND deep background knowledge</td>
+            <td><span class="tag" style="background:#f0fdf4;color:#065f46;border:1px solid #bbf7d0;">&#x2728; Both</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">They work great together.</div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Using Them Together</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="card simple-card" style="max-width:760px;width:100%;">
+      <h3>Example: Sales workflow</h3>
+      <p>You create a <strong>Project</strong> in Claude.ai called "Posit Sales." You upload your ICP definition, product one-pager, competitive battlecards, and tone guidelines. Claude knows all of this in every conversation.</p>
+      <p style="margin-top:10px;">Then you build a <strong>Skill</strong> called <code>call-prep</code>. When you say "prep me for my 2pm," Claude runs the structured call-prep workflow — pulling in your calendar, researching the prospect, and building a brief.</p>
+      <div class="analogy">
+        <span class="emoji">&#x1F4A1;</span>
+        <p>The Project provides the <strong>context</strong> (what to know). The Skill provides the <strong>workflow</strong> (what to do with it). Together, they're more powerful than either alone.</p>
+      </div>
+    </div>
+
+    <div style="height:36px;"></div>
+    <div class="stickies">
+      <div class="sticky" style="background:#fffbeb;--r:-1deg;">
+        <b>Quick rule</b>
+        Skills = what to DO. Projects = what to KNOW. When in doubt, ask yourself: "Is this a workflow or a knowledge base?"
+      </div>
+      <div class="sticky" style="background:#dbeafe;--r:0.7deg;">
+        <b>Projects are Claude.ai</b>
+        Projects live in the Claude.ai app, not Claude Code. If you use the CLI, use CLAUDE.md for persistent context instead.
+      </div>
+      <div class="sticky" style="background:#dcfce7;--r:-0.4deg;">
+        <b>Start simple</b>
+        You don't need both right away. Write a skill for your most repeated workflow first, then add a Project once you have docs worth loading.
+      </div>
+    </div>
+
+    <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+  </div><!-- end svp mode-simple -->
+
+
+  <!-- ════ IN DEPTH MODE ════ -->
+  <div class="spine mode-deep">
+
+    <div class="hero" style="margin-top:24px;">
+      <h2>Skills vs Projects —<br><span>Architecture Reference</span></h2>
+      <p>A decision framework for choosing between Skills, Projects, CLAUDE.md, and Hooks. Covers trigger models, scope, file structure, anti-patterns, and how to combine them.</p>
+    </div>
+
+    <!-- Full comparison table -->
+    <div class="arrow"></div>
+    <div class="step">Full Comparison — Seven Dimensions</div>
+    <div class="arrow"></div>
+
+    <div class="card" style="width:100%;max-width:1000px;">
+      <h3>Skills vs Projects</h3>
+      <p style="font-size:12.5px;color:#666;margin-bottom:4px;">Skills live in Claude Code. Projects live in Claude.ai. They solve fundamentally different problems.</p>
+      <table class="svp-table">
+        <thead>
+          <tr>
+            <th class="dim-col" style="width:20%">Dimension</th>
+            <th class="skills-col" style="width:40%">&#x1F4CB; Skills</th>
+            <th class="proj-col" style="width:40%">&#x1F4DA; Projects</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Lives in</strong></td>
+            <td class="skills-col">Claude Code<br><code style="font-size:11px;">.claude/skills/name/SKILL.md</code></td>
+            <td class="proj-col">Claude.ai app<br>Project workspace settings</td>
+          </tr>
+          <tr>
+            <td><strong>Triggered by</strong></td>
+            <td class="skills-col">User intent — matching phrases in the skill's description fire it automatically</td>
+            <td class="proj-col">Opening the Project — context is always active for every conversation inside it</td>
+          </tr>
+          <tr>
+            <td><strong>Contains</strong></td>
+            <td class="skills-col">Step-by-step workflow instructions, scripts, reference docs, subagent definitions</td>
+            <td class="proj-col">A system prompt, uploaded files (PDFs, docs, spreadsheets), shared knowledge base</td>
+          </tr>
+          <tr>
+            <td><strong>Scope</strong></td>
+            <td class="skills-col">Global (<code>~/.claude/skills/</code>) or per-repo (<code>.claude/skills/</code>)</td>
+            <td class="proj-col">Per Project workspace — applies to all conversations within that Project</td>
+          </tr>
+          <tr>
+            <td><strong>Persists across</strong></td>
+            <td class="skills-col">Any Claude Code session (global) or sessions in that repo (local)</td>
+            <td class="proj-col">All conversations in the Project, regardless of when you return</td>
+          </tr>
+          <tr>
+            <td><strong>Primary question</strong></td>
+            <td class="skills-col"><em>"How should Claude do this thing?"</em></td>
+            <td class="proj-col"><em>"What should Claude know about this domain?"</em></td>
+          </tr>
+          <tr>
+            <td><strong>Best for</strong></td>
+            <td class="skills-col">Recurring tasks, structured workflows, automation, multi-step orchestration</td>
+            <td class="proj-col">Domain expertise, product knowledge, tone &amp; style guidelines, reference material</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Anti-patterns -->
+    <div class="arrow"></div>
+    <div class="step">Anti-Patterns to Avoid</div>
+    <div class="arrow"></div>
+
+    <div class="row" style="max-width:1000px;">
+      <div class="card dont-card">
+        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Using Skills for Knowledge</div>
+        <p style="margin-top:8px;">Don't pack static reference material (product docs, FAQs, pricing tables) into a SKILL.md body. Skills are for workflows — they're loaded on intent and are not always available.</p>
+        <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
+          <strong>Fix:</strong> Put domain knowledge in a Project (Claude.ai) or in a <code>references/</code> file that your Skill loads on demand. Keep SKILL.md under 500 lines.
+        </div>
+      </div>
+      <div class="card dont-card">
+        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Using Projects for Workflows</div>
+        <p style="margin-top:8px;">Don't define step-by-step procedures in a Project's system prompt. Long procedural prompts in Projects are brittle — they don't modularize, version, or reuse well.</p>
+        <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
+          <strong>Fix:</strong> Move the workflow into a Skill. Reference it from your Project's system prompt with something like: "For call prep, follow the call-prep skill."
+        </div>
+      </div>
+    </div>
+
+    <!-- Combining -->
+    <div class="arrow"></div>
+    <div class="step">Combining Skills + Projects</div>
+    <div class="arrow"></div>
+
+    <div class="card" style="width:100%;max-width:1000px;">
+      <h3>Reference Architecture: Sales Intelligence</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:14px;">The Project provides domain context. Skills provide executable workflows. Each does what it's best at.</p>
+      <div class="row" style="gap:20px;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e40af;margin-bottom:8px;">&#x1F4DA; "Posit Sales" Project (Claude.ai)</div>
+          <div class="file-tree" style="font-size:12px;line-height:1.7;">System Prompt:
+  &bull; ICP definition
+  &bull; Product positioning
+  &bull; Competitive battlecards
+  &bull; Tone &amp; voice guidelines
+
+Uploaded Files:
+  &bull; product-overview.pdf
+  &bull; pricing-tiers.md
+  &bull; competitor-comparison.xlsx</div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#92400e;margin-bottom:8px;">&#x1F4CB; Skills (Claude Code)</div>
+          <div class="file-tree" style="font-size:12px;">~/.claude/skills/
+├── <span class="dir">call-prep/</span>
+│   └── <span class="file">SKILL.md</span>
+│       <span class="cm">Trigger: "prep me for…"</span>
+│       <span class="cm">Workflow: research → brief</span>
+│
+├── <span class="dir">inbox-triage/</span>
+│   └── <span class="file">SKILL.md</span>
+│       <span class="cm">Trigger: "triage inbox"</span>
+│       <span class="cm">Workflow: read → prioritize</span>
+│
+└── <span class="dir">call-review-sqo/</span>
+    └── <span class="file">SKILL.md</span>
+        <span class="cm">Trigger: "review my call"</span>
+        <span class="cm">Workflow: notes → SQO score</span></div>
+        </div>
+      </div>
+      <div class="big-tip" style="margin-top:16px;">
+        <span class="tip-icon">&#x1F4A1;</span>
+        <div>
+          <h4>How they interact</h4>
+          <p>The Project makes Claude an expert on your product and customers. The Skills make Claude an expert on your processes. When you say "prep me for my 2pm," the Skill fires — and it can draw on everything in the Project to build a contextually rich brief.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Full decision matrix -->
+    <div class="arrow"></div>
+    <div class="step">The Full Decision Matrix</div>
+    <div class="arrow"></div>
+
+    <div class="card" style="width:100%;max-width:1000px;">
+      <h3>Four tools, four jobs</h3>
+      <p style="font-size:12.5px;color:#666;margin-bottom:10px;">Match the tool to the problem. Reaching for the wrong one creates brittleness or redundancy.</p>
+      <table class="decision-table">
+        <thead>
+          <tr>
+            <th>Tool</th>
+            <th>Lives in</th>
+            <th>Activated by</th>
+            <th>Best for</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">Skill</span></td>
+            <td>Claude Code (.claude/skills/)</td>
+            <td>User intent phrase</td>
+            <td>Recurring procedural workflows</td>
+          </tr>
+          <tr>
+            <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">Project</span></td>
+            <td>Claude.ai workspace</td>
+            <td>Opening the Project</td>
+            <td>Domain knowledge, reference context</td>
+          </tr>
+          <tr>
+            <td><span class="tag" style="background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;">CLAUDE.md</span></td>
+            <td>Claude Code (root or .claude/)</td>
+            <td>Always — loaded every session</td>
+            <td>Persistent codebase rules &amp; conventions</td>
+          </tr>
+          <tr>
+            <td><span class="tag" style="background:#fafaf7;color:#555;border:1px solid #e0e0d8;">Hook</span></td>
+            <td>Claude Code (settings.json)</td>
+            <td>System event (pre/post tool use)</td>
+            <td>Automated enforcement, event-driven behaviors</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+  </div><!-- end svp mode-deep -->
+
+</div><!-- end svp board -->
+</div><!-- end page-svp -->
 
 <script>
   function setMode(mode) {
@@ -1151,7 +1503,24 @@ should persist beyond this session:
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Default to simple mode
+  function setPage(page) {
+    const body = document.body;
+    const tabArch = document.getElementById('tab-arch');
+    const tabSvp  = document.getElementById('tab-svp');
+
+    if (page === 'svp') {
+      body.classList.add('show-svp');
+      tabSvp.classList.add('active');
+      tabArch.classList.remove('active');
+    } else {
+      body.classList.remove('show-svp');
+      tabArch.classList.add('active');
+      tabSvp.classList.remove('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  // Defaults
   document.body.classList.add('show-simple');
 </script>
 </body>
