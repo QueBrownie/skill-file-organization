@@ -1205,8 +1205,8 @@ should persist beyond this session:
   <div class="spine mode-simple">
 
     <div class="hero" style="margin-top:24px;">
-      <h2>Skills or Projects?<br><span class="green">Here's How to Choose</span></h2>
-      <p>Both help Claude work better for you. Skills teach Claude <em>how to do</em> something. Projects give Claude something to <em>know</em>. Once you see the difference, it's obvious when to use which.</p>
+      <h2>Skills or Projects?<br><span class="green">They're Different Products</span></h2>
+      <p>Skills and Projects aren't two halves of the same system — they live in completely separate Claude interfaces. Knowing which interface you're in tells you which one to reach for.</p>
     </div>
 
     <div class="arrow" style="--c:#059669;"></div>
@@ -1254,40 +1254,43 @@ should persist beyond this session:
       <table class="decision-table" style="font-size:14px;">
         <thead>
           <tr>
-            <th style="width:58%">When you want Claude to…</th>
+            <th style="width:58%">Your situation</th>
             <th>Use this</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Follow the same steps every time ("triage my inbox", "prep me for my call")</td>
+            <td>You work in <strong>Claude Code</strong> (terminal, IDE) and want reusable step-by-step workflows</td>
             <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">&#x1F4CB; Skill</span></td>
           </tr>
           <tr>
-            <td>Always know your product, company context, or domain — without you re-explaining it</td>
+            <td>You work in <strong>Claude.ai</strong> (web or desktop chat) and want Claude to always know your domain</td>
             <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">&#x1F4DA; Project</span></td>
           </tr>
           <tr>
-            <td>Have both: structured workflows AND deep background knowledge</td>
-            <td><span class="tag" style="background:#f0fdf4;color:#065f46;border:1px solid #bbf7d0;">&#x2728; Both</span></td>
+            <td>You're in <strong>Claude Code</strong> and want persistent domain context without a Project</td>
+            <td><span class="tag" style="background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;">&#x1F4C4; CLAUDE.md</span></td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <div class="callout" style="margin-top:16px;">They work great together.</div>
+    <div class="callout" style="margin-top:16px;">Important: these are separate interfaces — they don't share context.</div>
 
     <div class="arrow" style="--c:#059669;"></div>
-    <div class="step" style="background:#059669;">Using Them Together</div>
+    <div class="step" style="background:#059669;">Different Tools, Different Interfaces</div>
     <div class="arrow" style="--c:#059669;"></div>
 
-    <div class="card simple-card" style="max-width:760px;width:100%;">
-      <h3>Example: Sales workflow</h3>
-      <p>You create a <strong>Project</strong> in Claude.ai called "Posit Sales." You upload your ICP definition, product one-pager, competitive battlecards, and tone guidelines. Claude knows all of this in every conversation.</p>
-      <p style="margin-top:10px;">Then you build a <strong>Skill</strong> called <code>call-prep</code>. When you say "prep me for my 2pm," Claude runs the structured call-prep workflow — pulling in your calendar, researching the prospect, and building a brief.</p>
-      <div class="analogy">
-        <span class="emoji">&#x1F4A1;</span>
-        <p>The Project provides the <strong>context</strong> (what to know). The Skill provides the <strong>workflow</strong> (what to do with it). Together, they're more powerful than either alone.</p>
+    <div class="row">
+      <div class="card simple-card" style="border-top:4px solid #d97706;">
+        <h3>&#x1F4BB; In Claude Code</h3>
+        <p>When you're working in Claude Code (terminal, IDE, or desktop code editor), you have access to <strong>Skills</strong>, <strong>CLAUDE.md</strong>, and <strong>hooks</strong>. You do <em>not</em> have access to Claude.ai Projects — they live in a different product entirely.</p>
+        <p style="margin-top:10px;">For persistent domain context in Claude Code, use <code>references/</code> files inside your skills, or put always-on instructions in <strong>CLAUDE.md</strong>.</p>
+      </div>
+      <div class="card simple-card" style="border-top:4px solid #3b82f6;">
+        <h3>&#x1F4AC; In Claude.ai</h3>
+        <p>When you're in Claude.ai (web or desktop chat), you have access to <strong>Projects</strong>. You do <em>not</em> have access to Claude Code skills — those only run in the code-editing interface.</p>
+        <p style="margin-top:10px;">If you use both Claude products for different tasks, you'll maintain them separately. They don't automatically share context or state.</p>
       </div>
     </div>
 
@@ -1318,16 +1321,16 @@ should persist beyond this session:
     <div style="height:36px;"></div>
     <div class="stickies">
       <div class="sticky" style="background:#fffbeb;--r:-1deg;">
-        <b>Quick rule</b>
-        Skills = what to DO. Projects = what to KNOW. When in doubt, ask yourself: "Is this a workflow or a knowledge base?"
+        <b>Different products</b>
+        Skills live in Claude Code. Projects live in Claude.ai. They don't run in the same session — pick based on which interface you're using.
       </div>
       <div class="sticky" style="background:#dbeafe;--r:0.7deg;">
-        <b>Projects are Claude.ai</b>
-        Projects live in the Claude.ai app, not Claude Code. If you use the CLI, use CLAUDE.md for persistent context instead.
+        <b>Context in Claude Code?</b>
+        No Projects in Claude Code. Use <code>references/</code> inside your skill for workflow-specific docs, or CLAUDE.md for always-on context.
       </div>
       <div class="sticky" style="background:#dcfce7;--r:-0.4deg;">
-        <b>Start simple</b>
-        You don't need both right away. Write a skill for your most repeated workflow first, then add a Project once you have docs worth loading.
+        <b>Context in Claude.ai?</b>
+        No Skills in Claude.ai. Upload your reference docs and write a system prompt in a Project — that's your persistent context there.
       </div>
     </div>
 
@@ -1340,7 +1343,7 @@ should persist beyond this session:
 
     <div class="hero" style="margin-top:24px;">
       <h2>Skills vs Projects —<br><span>Architecture Reference</span></h2>
-      <p>A decision framework for choosing between Skills, Projects, CLAUDE.md, and Hooks. Covers trigger models, scope, file structure, anti-patterns, and how to combine them.</p>
+      <p>A decision framework for choosing between Skills, Projects, CLAUDE.md, and Hooks. These are separate Claude interfaces — Skills belong to Claude Code, Projects belong to Claude.ai. They cannot be used in the same session.</p>
     </div>
 
     <!-- Full comparison table -->
@@ -1406,17 +1409,17 @@ should persist beyond this session:
 
     <div class="row" style="max-width:1000px;">
       <div class="card dont-card">
-        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Using Skills for Knowledge</div>
-        <p style="margin-top:8px;">Don't pack static reference material (product docs, FAQs, pricing tables) into a SKILL.md body. Skills are for workflows — they're loaded on intent and are not always available.</p>
+        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Packing knowledge into SKILL.md</div>
+        <p style="margin-top:8px;">Don't embed large static reference material (product docs, FAQs, pricing tables) directly in the SKILL.md body. Skills are for workflows — bloating the body wastes context window space every time the skill runs.</p>
         <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
-          <strong>Fix:</strong> Put domain knowledge in a Project (Claude.ai) or in a <code>references/</code> file that your Skill loads on demand. Keep SKILL.md under 500 lines.
+          <strong>Fix:</strong> Move domain docs into a <code>references/</code> file inside the skill directory. The skill loads it on demand — only when that step runs. For always-on context across all Claude Code sessions, use <strong>CLAUDE.md</strong> instead.
         </div>
       </div>
       <div class="card dont-card">
-        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Using Projects for Workflows</div>
-        <p style="margin-top:8px;">Don't define step-by-step procedures in a Project's system prompt. Long procedural prompts in Projects are brittle — they don't modularize, version, or reuse well.</p>
+        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Turning a Project system prompt into a workflow doc</div>
+        <p style="margin-top:8px;">Don't define long step-by-step procedures in a Claude.ai Project's system prompt. Procedural prompts in Projects are brittle, hard to maintain, and can't be versioned or reused the way Skills can. Projects aren't accessible from Claude Code either — they're separate products.</p>
         <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
-          <strong>Fix:</strong> Move the workflow into a Skill. Reference it from your Project's system prompt with something like: "For call prep, follow the call-prep skill."
+          <strong>Fix:</strong> Keep the system prompt focused on role, knowledge, and behavior. For reusable workflows, switch to Claude Code and build a Skill — that's the right tool for procedural work.
         </div>
       </div>
     </div>
@@ -1484,52 +1487,51 @@ before assigning a tier.</div>
       </div>
     </div>
 
-    <!-- Combining -->
+    <!-- Parallel setups -->
     <div class="arrow"></div>
-    <div class="step">Combining Skills + Projects</div>
+    <div class="step">Parallel Setups — Not Integration</div>
     <div class="arrow"></div>
 
     <div class="card" style="width:100%;max-width:1000px;">
-      <h3>Reference Architecture: Sales Intelligence</h3>
-      <p style="font-size:13px;color:#666;margin-bottom:14px;">The Project provides domain context. Skills provide executable workflows. Each does what it's best at.</p>
+      <h3>Two products, two independent setups</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:14px;">Skills and Projects cannot share context or run in the same session. If you use both Claude products for different workflows, you maintain them independently.</p>
       <div class="row" style="gap:20px;">
         <div style="flex:1;min-width:0;">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e40af;margin-bottom:8px;">&#x1F4DA; "Posit Sales" Project (Claude.ai)</div>
-          <div class="file-tree" style="font-size:12px;line-height:1.7;">System Prompt:
-  &bull; ICP definition
-  &bull; Product positioning
-  &bull; Competitive battlecards
-  &bull; Tone &amp; voice guidelines
-
-Uploaded Files:
-  &bull; product-overview.pdf
-  &bull; pricing-tiers.md
-  &bull; competitor-comparison.xlsx</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#d97706;margin-bottom:8px;">&#x1F4BB; Claude Code setup</div>
+          <div class="file-tree" style="font-size:12px;">~/.claude/
+├── <span class="file">CLAUDE.md</span>             <span class="cm">← always-on context</span>
+└── <span class="dir">skills/</span>
+    ├── <span class="dir">call-prep/</span>
+    │   ├── <span class="file">SKILL.md</span>
+    │   └── <span class="dir">references/</span>
+    │       ├── <span class="file">qualification-criteria.md</span>
+    │       └── <span class="file">competitor-notes.md</span>
+    └── <span class="dir">inbox-triage/</span>
+        └── <span class="file">SKILL.md</span></div>
+          <p style="font-size:12px;color:#666;margin-top:8px;">Domain context lives in <code>references/</code> and <code>CLAUDE.md</code>. No Projects here.</p>
         </div>
         <div style="flex:1;min-width:0;">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#92400e;margin-bottom:8px;">&#x1F4CB; Skills (Claude Code)</div>
-          <div class="file-tree" style="font-size:12px;">~/.claude/skills/
-├── <span class="dir">call-prep/</span>
-│   └── <span class="file">SKILL.md</span>
-│       <span class="cm">Trigger: "prep me for…"</span>
-│       <span class="cm">Workflow: research → brief</span>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e40af;margin-bottom:8px;">&#x1F4AC; Claude.ai setup</div>
+          <div class="file-tree" style="font-size:12px;line-height:1.7;">"Posit Sales" Project
 │
-├── <span class="dir">inbox-triage/</span>
-│   └── <span class="file">SKILL.md</span>
-│       <span class="cm">Trigger: "triage inbox"</span>
-│       <span class="cm">Workflow: read → prioritize</span>
+├── System Prompt:
+│   &bull; Role definition
+│   &bull; ICP &amp; buyer context
+│   &bull; Tone guidelines
+│   &bull; File pointers
 │
-└── <span class="dir">call-review-sqo/</span>
-    └── <span class="file">SKILL.md</span>
-        <span class="cm">Trigger: "review my call"</span>
-        <span class="cm">Workflow: notes → SQO score</span></div>
+└── Uploaded Files:
+    &bull; product-overview.pdf
+    &bull; pricing-tiers.md
+    &bull; competitor-battlecards.md</div>
+          <p style="font-size:12px;color:#666;margin-top:8px;">Knowledge base for Claude.ai conversations. No Skills here.</p>
         </div>
       </div>
       <div class="big-tip" style="margin-top:16px;">
-        <span class="tip-icon">&#x1F4A1;</span>
+        <span class="tip-icon">&#x26A0;&#xFE0F;</span>
         <div>
-          <h4>How they interact</h4>
-          <p>The Project makes Claude an expert on your product and customers. The Skills make Claude an expert on your processes. When you say "prep me for my 2pm," the Skill fires — and it can draw on everything in the Project to build a contextually rich brief.</p>
+          <h4>No automatic sync</h4>
+          <p>If the same reference doc (e.g. your ICP definition) should be available in both interfaces, you maintain two copies: one uploaded to the Claude.ai Project, one as a file in your skill's <code>references/</code> folder. They don't share or update each other.</p>
         </div>
       </div>
     </div>
