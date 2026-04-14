@@ -1223,6 +1223,7 @@ should persist beyond this session:
         </div>
         <ul style="margin-top:12px;">
           <li>Lives in Claude Code (<code>.claude/skills/</code>)</li>
+          <li>Works in the CLI, IDE extensions, desktop app, and claude.ai workspace</li>
           <li>Fires when you say the right phrase</li>
           <li>Contains step-by-step workflow instructions</li>
           <li>Best for things you do repeatedly</li>
@@ -1260,15 +1261,15 @@ should persist beyond this session:
         </thead>
         <tbody>
           <tr>
-            <td>You work in <strong>Claude Code</strong> (terminal, IDE) and want reusable step-by-step workflows</td>
+            <td>You want reusable step-by-step workflows in <strong>Claude Code</strong> (CLI, IDE, desktop app, or claude.ai workspace)</td>
             <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">&#x1F4CB; Skill</span></td>
           </tr>
           <tr>
-            <td>You work in <strong>Claude.ai</strong> (web or desktop chat) and want Claude to always know your domain</td>
+            <td>You want Claude to always know your domain in <strong>Claude.ai chat</strong> (web or desktop chat interface)</td>
             <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">&#x1F4DA; Project</span></td>
           </tr>
           <tr>
-            <td>You're in <strong>Claude Code</strong> and want persistent domain context without a Project</td>
+            <td>You want persistent context across all your <strong>Claude Code</strong> sessions</td>
             <td><span class="tag" style="background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;">&#x1F4C4; CLAUDE.md</span></td>
           </tr>
         </tbody>
@@ -1284,13 +1285,13 @@ should persist beyond this session:
     <div class="row">
       <div class="card simple-card" style="border-top:4px solid #d97706;">
         <h3>&#x1F4BB; In Claude Code</h3>
-        <p>When you're working in Claude Code (terminal, IDE, or desktop code editor), you have access to <strong>Skills</strong>, <strong>CLAUDE.md</strong>, and <strong>hooks</strong>. You do <em>not</em> have access to Claude.ai Projects — they live in a different product entirely.</p>
-        <p style="margin-top:10px;">For persistent domain context in Claude Code, use <code>references/</code> files inside your skills, or put always-on instructions in <strong>CLAUDE.md</strong>.</p>
+        <p>Claude Code runs in multiple surfaces: the <strong>CLI</strong>, <strong>IDE extensions</strong> (VS Code, JetBrains), the <strong>desktop app</strong>, and the <strong>claude.ai workspace</strong>. In all of these you have access to <strong>Skills</strong>, <strong>CLAUDE.md</strong>, and <strong>hooks</strong>.</p>
+        <p style="margin-top:10px;">Projects are not available here. For persistent domain context, use <code>references/</code> files inside your skills, or put always-on instructions in <strong>CLAUDE.md</strong>.</p>
       </div>
       <div class="card simple-card" style="border-top:4px solid #3b82f6;">
-        <h3>&#x1F4AC; In Claude.ai</h3>
-        <p>When you're in Claude.ai (web or desktop chat), you have access to <strong>Projects</strong>. You do <em>not</em> have access to Claude Code skills — those only run in the code-editing interface.</p>
-        <p style="margin-top:10px;">If you use both Claude products for different tasks, you'll maintain them separately. They don't automatically share context or state.</p>
+        <h3>&#x1F4AC; In Claude.ai chat</h3>
+        <p>Claude.ai's <strong>chat interface</strong> (web or desktop) is where <strong>Projects</strong> live — persistent workspaces with a system prompt and uploaded files. Skills are not available here; this is a conversation interface, not a Claude Code environment.</p>
+        <p style="margin-top:10px;">If you use both, you'll maintain them independently — there's no automatic context sharing between them.</p>
       </div>
     </div>
 
@@ -1321,8 +1322,8 @@ should persist beyond this session:
     <div style="height:36px;"></div>
     <div class="stickies">
       <div class="sticky" style="background:#fffbeb;--r:-1deg;">
-        <b>Different products</b>
-        Skills live in Claude Code. Projects live in Claude.ai. They don't run in the same session — pick based on which interface you're using.
+        <b>Two different interfaces</b>
+        Skills work in Claude Code (CLI, IDE, desktop app, claude.ai workspace). Projects work in Claude.ai chat. Same company, different surfaces.
       </div>
       <div class="sticky" style="background:#dbeafe;--r:0.7deg;">
         <b>Context in Claude Code?</b>
@@ -1365,8 +1366,8 @@ should persist beyond this session:
         <tbody>
           <tr>
             <td><strong>Lives in</strong></td>
-            <td class="skills-col">Claude Code<br><code style="font-size:11px;">.claude/skills/name/SKILL.md</code></td>
-            <td class="proj-col">Claude.ai app<br>Project workspace settings</td>
+            <td class="skills-col">Claude Code (CLI, IDE, desktop app, claude.ai workspace)<br><code style="font-size:11px;">.claude/skills/name/SKILL.md</code></td>
+            <td class="proj-col">Claude.ai chat interface<br>(web or desktop — not the claude.ai workspace)</td>
           </tr>
           <tr>
             <td><strong>Triggered by</strong></td>
@@ -1497,7 +1498,7 @@ before assigning a tier.</div>
       <p style="font-size:13px;color:#666;margin-bottom:14px;">Skills and Projects cannot share context or run in the same session. If you use both Claude products for different workflows, you maintain them independently.</p>
       <div class="row" style="gap:20px;">
         <div style="flex:1;min-width:0;">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#d97706;margin-bottom:8px;">&#x1F4BB; Claude Code setup</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#d97706;margin-bottom:8px;">&#x1F4BB; Claude Code (CLI / IDE / desktop / claude.ai workspace)</div>
           <div class="file-tree" style="font-size:12px;">~/.claude/
 ├── <span class="file">CLAUDE.md</span>             <span class="cm">← always-on context</span>
 └── <span class="dir">skills/</span>
@@ -1511,7 +1512,7 @@ before assigning a tier.</div>
           <p style="font-size:12px;color:#666;margin-top:8px;">Domain context lives in <code>references/</code> and <code>CLAUDE.md</code>. No Projects here.</p>
         </div>
         <div style="flex:1;min-width:0;">
-          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e40af;margin-bottom:8px;">&#x1F4AC; Claude.ai setup</div>
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:#1e40af;margin-bottom:8px;">&#x1F4AC; Claude.ai chat (web or desktop chat interface)</div>
           <div class="file-tree" style="font-size:12px;line-height:1.7;">"Posit Sales" Project
 │
 ├── System Prompt:
