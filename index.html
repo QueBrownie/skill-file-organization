@@ -295,11 +295,11 @@
     gap: 4px;
   }
   .page-tab {
-    padding: 13px 26px; border: none; background: transparent; cursor: pointer;
-    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600;
+    padding: 18px 36px; border: none; background: transparent; cursor: pointer;
+    font-family: 'Inter', sans-serif; font-size: 17px; font-weight: 700;
     color: #888; border-bottom: 3px solid transparent;
     margin-bottom: -2px; transition: color .15s, border-color .15s;
-    display: flex; align-items: center; gap: 7px;
+    display: flex; align-items: center; gap: 9px;
   }
   .page-tab.active { color: #d97706; border-bottom-color: #d97706; }
   .page-tab:hover:not(.active) { color: #555; }
@@ -336,11 +336,11 @@
 
 <!-- ── Page Nav ── -->
 <nav class="page-nav">
-  <button class="page-tab active" id="tab-arch" onclick="setPage('arch')">
-    &#x1F5C2;&#xFE0F; Skill Architecture
-  </button>
   <button class="page-tab" id="tab-svp" onclick="setPage('svp')">
-    &#x2696;&#xFE0F; Skills vs Projects
+    &#x2696;&#xFE0F; Skills vs. Projects
+  </button>
+  <button class="page-tab" id="tab-arch" onclick="setPage('arch')">
+    &#x1F5C2;&#xFE0F; Skill Architecture
   </button>
 </nav>
 
@@ -1520,8 +1520,9 @@ Uploaded Files:
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  // Defaults
+  // Defaults: Skills vs Projects tab, Simple mode
   document.body.classList.add('show-simple');
+  setPage('svp');
 </script>
 </body>
 </html>
