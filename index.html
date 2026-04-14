@@ -1274,6 +1274,30 @@ should persist beyond this session:
       </div>
     </div>
 
+    <div class="callout" style="margin-top:16px;">Skills can also carry their own reference docs — no Project required.</div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Skills Can Bring Their Own Context</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="card simple-card" style="max-width:760px;width:100%;">
+      <h3>&#x1F4C2; The <code>references/</code> folder</h3>
+      <p>You don't always need a full Claude.ai Project to give a skill context. Skills support a <code>references/</code> folder — markdown files that get loaded when the skill runs. You link to them from your SKILL.md instructions and Claude reads them automatically.</p>
+      <div class="analogy">
+        <span class="emoji">&#x1F4CE;</span>
+        <p><strong>Like attaching a brief to an SOP.</strong> Your <code>call-prep</code> skill can pull in a <code>qualification-criteria.md</code> file every time — so Claude always has the right context, scoped exactly to that workflow.</p>
+      </div>
+      <ul style="margin-top:12px;">
+        <li>Add a <code>references/</code> folder inside your skill directory</li>
+        <li>Link to files from your SKILL.md body (e.g. <code>[criteria](references/criteria.md)</code>)</li>
+        <li>Claude reads the file when the skill runs — no Project upload needed</li>
+        <li>Great for context that's specific to one workflow and doesn't change often</li>
+      </ul>
+      <div class="tip" style="margin-top:14px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
+        &#x1F4D6; For the full details on <code>references/</code>, scripts, and advanced skill file structure — switch to the <strong>Skill Architecture</strong> tab above.
+      </div>
+    </div>
+
     <div style="height:36px;"></div>
     <div class="stickies">
       <div class="sticky" style="background:#fffbeb;--r:-1deg;">
@@ -1376,6 +1400,69 @@ should persist beyond this session:
         <p style="margin-top:8px;">Don't define step-by-step procedures in a Project's system prompt. Long procedural prompts in Projects are brittle — they don't modularize, version, or reuse well.</p>
         <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
           <strong>Fix:</strong> Move the workflow into a Skill. Reference it from your Project's system prompt with something like: "For call prep, follow the call-prep skill."
+        </div>
+      </div>
+    </div>
+
+    <!-- References as middle ground -->
+    <div class="arrow"></div>
+    <div class="step">references/ — Context Without a Project</div>
+    <div class="arrow"></div>
+
+    <div class="card" style="width:100%;max-width:1000px;">
+      <h3>The middle ground: skill-scoped reference docs</h3>
+      <p style="font-size:12.5px;color:#666;margin-bottom:14px;">Not every piece of context warrants a full Claude.ai Project. The <code>references/</code> folder lets a skill bundle its own domain knowledge — loaded on demand, scoped only to that skill's workflow.</p>
+      <div class="row" style="gap:20px;">
+        <div style="flex:1;min-width:0;">
+          <p style="font-size:12.5px;font-weight:700;margin-bottom:8px;">File structure</p>
+          <div class="file-tree" style="font-size:12px;">call-prep/
+├── <span class="file">SKILL.md</span>             <span class="cm">← workflow instructions</span>
+└── <span class="dir">references/</span>
+    ├── <span class="file">qualification-criteria.md</span>
+    ├── <span class="file">discovery-questions.md</span>
+    └── <span class="file">competitor-notes.md</span></div>
+          <p style="font-size:12.5px;margin-top:12px;">Linked from inside SKILL.md:</p>
+          <div class="code" style="font-size:12px;margin-top:6px;"><span class="cm">## Step 2: Qualify the Lead</span>
+Review scoring criteria in
+<span class="str">[references/qualification-criteria.md]</span>
+<span class="str">(references/qualification-criteria.md)</span>
+before assigning a tier.</div>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <p style="font-size:12.5px;font-weight:700;margin-bottom:8px;">references/ vs Project — when to use which</p>
+          <table class="decision-table" style="font-size:12.5px;">
+            <thead>
+              <tr>
+                <th>Scenario</th>
+                <th>Use</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Context is specific to one skill's workflow</td>
+                <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">references/</span></td>
+              </tr>
+              <tr>
+                <td>Context should be available across many different requests</td>
+                <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">Project</span></td>
+              </tr>
+              <tr>
+                <td>You only use Claude Code (no Claude.ai)</td>
+                <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">references/</span></td>
+              </tr>
+              <tr>
+                <td>Docs are large, evolve often, or need file uploads</td>
+                <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">Project</span></td>
+              </tr>
+              <tr>
+                <td>Context is reused across multiple skills</td>
+                <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">Project</span></td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="tip" style="margin-top:12px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
+            &#x1F4D6; <strong>See the Skill Architecture tab</strong> for the full breakdown of <code>references/</code>, <code>scripts/</code>, <code>agents/</code>, and <code>evals/</code> — including loading model, sizing guidelines, and dynamic context injection.
+          </div>
         </div>
       </div>
     </div>
