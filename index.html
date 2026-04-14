@@ -586,7 +586,7 @@ Step 3: Show me a summary with the most
     <div class="row">
       <div class="card">
         <h3>Canonical Skill Directory</h3>
-        <p>Every skill lives in its own folder. Only <code>SKILL.md</code> is required. Three official bundled resource types live alongside it.</p>
+        <p>Every skill lives in its own folder. Only <code>SKILL.md</code> is required. Optional resource directories can live alongside it.</p>
         <div class="file-tree">
 <span class="dir">my-skill/</span>
 ├── <span class="file">SKILL.md</span>            <span class="req">(required)</span>
@@ -653,6 +653,12 @@ Use the template in <span class="str">`assets/daily-brief.md`</span>.
         <div class="tip" style="margin-top:14px;background:#fffbeb;color:#92400e;border-color:#fde68a;">
           <strong>Key rule:</strong> Keep SKILL.md under ~500 lines. If you're approaching the limit, offload detail into <code>references/</code> with clear pointers about when to read them.
         </div>
+        <div class="tip" style="margin-top:8px;background:#f0fdf4;color:#065f46;border-color:#bbf7d0;">
+          <strong>Dynamic context injection:</strong> Use <code>!`command`</code> in the SKILL.md body to inject live shell output before the skill runs. Example:<br>
+          <code style="font-size:11px;">- Branch: !`git branch --show-current`</code><br>
+          <code style="font-size:11px;">- Status: !`git status --short`</code><br>
+          The command executes and its output replaces the placeholder — no manual copy-paste needed.
+        </div>
       </div>
     </div>
 
@@ -668,7 +674,7 @@ Use the template in <span class="str">`assets/daily-brief.md`</span>.
         <div class="level-num">1</div>
         <span class="badge" style="background:#fef3c7;color:#92400e;">Always in Context</span>
         <h3>Metadata</h3>
-        <p><strong>name + description</strong> from YAML frontmatter. Always visible in Claude's skill list (~100 words). This is the <em>trigger mechanism</em> — it determines whether the skill fires at all.</p>
+        <p><strong>name + description</strong> from YAML frontmatter. Always loaded into Claude's context — descriptions are visible on every turn so Claude can decide whether to fire the skill. Target ~100 words: enough to cover trigger phrases and edge cases without bloating persistent context.</p>
         <p style="margin-top:10px;font-size:12px;color:#92400e;font-weight:600;">Tip: Make descriptions "pushy" — list trigger phrases and edge cases. Under-triggering is the #1 problem.</p>
       </div>
       <div class="card" style="overflow:hidden;">
@@ -858,6 +864,9 @@ Spawn final subagent with all prior results.
         <div class="tip" style="background:#ecfeff;color:#164e63;border-color:#a5f3fc;">
           <strong>Mental model:</strong> Write your description as if briefing a smart colleague who has never seen your skill. What would they need to know to recognize when to use it?
         </div>
+        <div class="tip" style="margin-top:10px;background:#fafaf7;color:#555;border-color:#e0e0d8;">
+          <strong>Manual invocation:</strong> Users can also trigger any skill directly by typing <code>/skill-name</code> — useful for forcing a run regardless of whether intent matching would have fired it.
+        </div>
         <p style="margin-top:14px;margin-bottom:8px;">A strong description has three parts:</p>
         <ul>
           <li><strong>What it does</strong> — one crisp sentence</li>
@@ -964,7 +973,7 @@ Spawn final subagent with all prior results.
           <div class="debug-num">4</div>
           <div>
             <p style="font-weight:600;font-size:13.5px;">Check SKILL.md body length</p>
-            <p style="font-size:12.5px;color:#666;">A skill over 500 lines may load slowly or incompletely. Profile which sections are heavy and offload into references.</p>
+            <p style="font-size:12.5px;color:#666;">A skill over 500 lines consumes significant context window space, leaving less room for tool outputs and conversation. Profile which sections are heavy and offload detail into <code>references/</code>.</p>
           </div>
         </div>
         <div class="debug-step">
@@ -1358,7 +1367,7 @@ should persist beyond this session:
           </tr>
           <tr>
             <td><strong>Triggered by</strong></td>
-            <td class="skills-col">User intent — matching phrases in the skill's description fire it automatically</td>
+            <td class="skills-col">User intent — matching phrases in the skill's description fire it automatically. Skills can also be invoked manually with <code>/skill-name</code>.</td>
             <td class="proj-col">Opening the Project — context is always active for every conversation inside it</td>
           </tr>
           <tr>
@@ -1741,7 +1750,7 @@ Uploaded Files:
     <div class="row">
       <div class="card">
         <h3>Project Components</h3>
-        <p>Every Claude.ai Project has two primary components. Together they define what Claude knows and how it behaves in every conversation in that project.</p>
+        <p>Every Claude.ai Project (available in the web app and desktop app) has two primary components. Together they define what Claude knows and how it behaves in every conversation in that project.</p>
         <div class="file-tree" style="margin-top:12px;">
 <span class="dir">Claude.ai Project</span>
 │
