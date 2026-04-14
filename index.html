@@ -309,6 +309,11 @@
   body.show-svp .page-svp { display: block; }
   body.show-svp .page-arch { display: none; }
 
+  .page-pa { display: none; }
+  body.show-pa .page-pa { display: block; }
+  body.show-pa .page-arch { display: none; }
+  body.show-pa .page-svp { display: none; }
+
   /* ── SVP comparison table ── */
   .svp-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 14px; }
   .svp-table th { padding: 10px 16px; text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; }
@@ -341,6 +346,9 @@
   </button>
   <button class="page-tab" id="tab-arch" onclick="setPage('arch')">
     &#x1F5C2;&#xFE0F; Skill Architecture
+  </button>
+  <button class="page-tab" id="tab-pa" onclick="setPage('pa')">
+    &#x1F4DA; Project Architecture
   </button>
 </nav>
 
@@ -1569,6 +1577,461 @@ Uploaded Files:
 </div><!-- end svp board -->
 </div><!-- end page-svp -->
 
+
+<!-- ════════════════════════════════════════
+     PAGE: PROJECT ARCHITECTURE
+════════════════════════════════════════ -->
+<div id="page-pa" class="page-pa">
+<div class="board">
+
+  <!-- ════ SIMPLE MODE ════ -->
+  <div class="spine mode-simple">
+
+    <div class="hero" style="margin-top:24px;">
+      <h2>Building Effective<br><span class="green">Claude Projects</span></h2>
+      <p>A Project gives Claude a permanent home base — knowledge and context it carries into every conversation. Here's how to build one that actually makes Claude smarter about your work.</p>
+    </div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">The Two Parts of a Project</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card" style="border-top:4px solid #3b82f6;">
+        <h3>&#x1F4DD; System Prompt</h3>
+        <p>The system prompt is your briefing to Claude — written instructions that set the stage for every conversation in this project.</p>
+        <div class="analogy">
+          <span class="emoji">&#x1F4CB;</span>
+          <p><strong>Like day-one onboarding.</strong> "You're a sales assistant at Posit. Our customers are data scientists and IT teams. Always be consultative, not pushy."</p>
+        </div>
+        <ul style="margin-top:12px;">
+          <li>Defines Claude's role and persona</li>
+          <li>Sets tone, behavior, and output style</li>
+          <li>Lists what Claude should always know</li>
+          <li>Keep it focused — under ~500 words works best</li>
+        </ul>
+      </div>
+      <div class="card simple-card" style="border-top:4px solid #8b5cf6;">
+        <h3>&#x1F4C2; Uploaded Files</h3>
+        <p>Files are your reference library — product docs, FAQs, competitive intel, pricing. Anything Claude might need to look up during a conversation.</p>
+        <div class="analogy">
+          <span class="emoji">&#x1F5C3;&#xFE0F;</span>
+          <p><strong>Like a shared drive folder.</strong> Upload the docs you'd give a new hire on day one. Claude can reference them across every conversation in the project.</p>
+        </div>
+        <ul style="margin-top:12px;">
+          <li>PDFs, Word docs, spreadsheets, markdown</li>
+          <li>Name them clearly — Claude reads the filename</li>
+          <li>Upload what's relevant, not everything</li>
+          <li>Update them when things change</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">The system prompt is the most important thing to get right.</div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Writing a Good System Prompt</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card">
+        <h3>What to include</h3>
+        <div class="simple-steps">
+          <div class="simple-step">
+            <div class="simple-num">1</div>
+            <div class="simple-step-body">
+              <strong>Define the role</strong>
+              <p>Start with who Claude is in this project. "You are a sales assistant at Posit..." gives Claude an immediate frame of reference for every conversation.</p>
+            </div>
+          </div>
+          <div class="simple-step">
+            <div class="simple-num">2</div>
+            <div class="simple-step-body">
+              <strong>Share key domain knowledge</strong>
+              <p>Facts Claude should always have in mind — your ICP, product category, key differentiators, how customers describe their pain.</p>
+            </div>
+          </div>
+          <div class="simple-step">
+            <div class="simple-num">3</div>
+            <div class="simple-step-body">
+              <strong>Set tone and output preferences</strong>
+              <p>"Be consultative, not pushy." / "Default to bullet points." Always explain the why — it helps Claude apply rules correctly in edge cases.</p>
+            </div>
+          </div>
+          <div class="simple-step">
+            <div class="simple-num">4</div>
+            <div class="simple-step-body">
+              <strong>Point to your uploaded files</strong>
+              <p>"For pricing questions, refer to pricing-tiers.md." Tells Claude what reference material is available and when to use it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="card simple-card">
+        <h3>What to leave out</h3>
+        <ul>
+          <li><strong>Step-by-step workflows.</strong> Those belong in Skills. Procedures in a system prompt get brittle and are hard to maintain.</li>
+          <li><strong>Rules without reasons.</strong> "Always do X" is weaker than "Always do X because Y." Give Claude enough context to generalize correctly.</li>
+          <li><strong>Things that change frequently.</strong> The prompt loads every conversation — don't put info in it that will be stale next month.</li>
+          <li><strong>Content already in your files.</strong> If it's in an uploaded doc, just reference the file. Don't paste the same content into the prompt too.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:16px;">A few habits that keep Projects working well over time.</div>
+
+    <div class="arrow" style="--c:#059669;"></div>
+    <div class="step" style="background:#059669;">Quick Tips</div>
+    <div class="arrow" style="--c:#059669;"></div>
+
+    <div class="row">
+      <div class="card simple-card do-card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;color:#16a34a;">Do This</div>
+        <ul>
+          <li><strong>Name files like a new hire would understand.</strong> "competitive-battlecards.pdf" beats "doc-v3-final.pdf".</li>
+          <li><strong>Update files when things change.</strong> Stale docs silently give Claude wrong information.</li>
+          <li><strong>Use Projects + Skills together.</strong> Let the Project hold context; let Skills handle workflows.</li>
+          <li><strong>Explain the why in your prompt.</strong> "Be consultative because our buyers are technical and skeptical of sales pressure" is far stronger than just "don't be pushy."</li>
+        </ul>
+      </div>
+      <div class="card simple-card dont-card">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;color:#dc2626;">Avoid This</div>
+        <ul>
+          <li><strong>Uploading everything.</strong> Quality over quantity. Irrelevant files add noise and dilute what Claude focuses on.</li>
+          <li><strong>Putting workflows in the system prompt.</strong> Use Skills for step-by-step processes. Keep the prompt focused on knowledge.</li>
+          <li><strong>Setting it and forgetting it.</strong> Review your system prompt every few weeks — your context evolves.</li>
+          <li><strong>Vague role definitions.</strong> "You are a helpful assistant" tells Claude nothing useful. Be specific about domain and context.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="height:36px;"></div>
+    <div class="stickies">
+      <div class="sticky" style="background:#dbeafe;--r:-1deg;">
+        <b>The prompt is a briefing</b>
+        It sets the stage — who Claude is, what it knows, how to behave. Focused and under ~500 words. Not a manual.
+      </div>
+      <div class="sticky" style="background:#ede9fe;--r:0.6deg;">
+        <b>Name files clearly</b>
+        Claude reads filenames. "product-overview.pdf" beats "v2-final-draft.pdf". Name them like you're filing for someone else.
+      </div>
+      <div class="sticky" style="background:#dcfce7;--r:-0.4deg;">
+        <b>Projects + Skills</b>
+        Project = what Claude KNOWS. Skill = what Claude DOES. They're most powerful used together.
+      </div>
+    </div>
+
+    <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+  </div><!-- end pa mode-simple -->
+
+
+  <!-- ════ IN DEPTH MODE ════ -->
+  <div class="spine mode-deep">
+
+    <div class="hero" style="margin-top:24px;">
+      <h2>Project Architecture &mdash;<br><span style="color:#2563eb;">Design Reference</span></h2>
+      <p>Follow the flow: anatomy &rarr; system prompt patterns &rarr; file strategy &rarr; principles &rarr; pitfalls &rarr; Skills integration &rarr; right tool. Each step builds on the last.</p>
+    </div>
+
+    <!-- Step 1: Anatomy -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 1 &mdash; Know the Structure</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="row">
+      <div class="card">
+        <h3>Project Components</h3>
+        <p>Every Claude.ai Project has two primary components. Together they define what Claude knows and how it behaves in every conversation in that project.</p>
+        <div class="file-tree" style="margin-top:12px;">
+<span class="dir">Claude.ai Project</span>
+│
+├── <span class="file">System Prompt</span>           <span class="req">(required)</span>
+│   ├── Role definition       <span class="cm">← who Claude is</span>
+│   ├── Domain knowledge      <span class="cm">← what Claude knows</span>
+│   ├── Behavior rules        <span class="cm">← tone, style, constraints</span>
+│   └── File references       <span class="cm">← pointers to uploaded docs</span>
+│
+└── <span class="dir">Uploaded Files</span>           <span class="opt">(optional)</span>
+    ├── product-overview.pdf  <span class="cm">← reference material</span>
+    ├── pricing-tiers.md      <span class="cm">← structured data</span>
+    ├── competitor-notes.md   <span class="cm">← competitive intel</span>
+    └── faqs.md               <span class="cm">← support knowledge</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3>A Complete System Prompt — Example</h3>
+        <p>The system prompt is read at the start of every conversation. Files are pulled in when Claude explicitly references them.</p>
+        <div class="code" style="margin-top:14px;font-size:11.5px;">
+<span class="cm"># Role</span>
+You are a sales assistant at Posit, supporting
+the MDR team with prospecting, call prep, and
+follow-up.
+
+<span class="cm"># Who We Sell To</span>
+Buyers are data scientists, engineers, and IT
+leaders at mid-market and enterprise companies.
+They care about reproducibility, open source, and
+total cost of ownership.
+
+<span class="cm"># Tone</span>
+Be consultative and technically credible. Avoid
+generic sales language — our buyers distrust it.
+Lead with their problem before our solution.
+
+<span class="cm"># Reference Files</span>
+- Pricing → pricing-tiers.md
+- Competition → competitor-notes.md
+- Product overview → product-overview.pdf
+        </div>
+        <div class="tip" style="margin-top:12px;background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">
+          Keep the system prompt under ~500 words. Longer prompts dilute focus — move detail into reference files instead.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: System Prompt Patterns -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 2 &mdash; System Prompt Patterns</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="three">
+      <div class="card" style="border-top:3px solid #2563eb;position:relative;overflow:hidden;">
+        <span class="level-num">A</span>
+        <div class="badge" style="background:#eff6ff;color:#1e40af;">Pattern A</div>
+        <h3>Domain Expert</h3>
+        <p style="font-size:13px;color:#555;margin-bottom:10px;">Claude is an expert on a specific subject. Best for knowledge-heavy projects where you need accurate, detailed answers from a shared knowledge base.</p>
+        <div class="code" style="font-size:11px;">
+<span class="cm"># Role</span>
+You are an expert on Posit's product suite,
+with deep knowledge of Workbench, Connect,
+Package Manager, and Cloud.
+
+<span class="cm"># When asked about...</span>
+- Pricing → refer to pricing-tiers.md
+- Use cases → refer to case-studies.pdf
+- Competitors → refer to competitor-notes.md
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid #7c3aed;position:relative;overflow:hidden;">
+        <span class="level-num">B</span>
+        <div class="badge" style="background:#f5f3ff;color:#6d28d9;">Pattern B</div>
+        <h3>Role / Persona</h3>
+        <p style="font-size:13px;color:#555;margin-bottom:10px;">Claude adopts a specific job role. Best when you want a consistent voice, decision-making lens, and professional perspective across all conversations.</p>
+        <div class="code" style="font-size:11px;">
+<span class="cm"># Role</span>
+You are an MDR at Posit. Your job is to qualify
+inbound leads and book discovery calls with AEs.
+
+<span class="cm"># How you think</span>
+Evaluate leads against our ICP. Ask discovery
+questions before pitching. Know when a lead
+isn't ready — and say so honestly.
+        </div>
+      </div>
+      <div class="card" style="border-top:3px solid #0d9488;position:relative;overflow:hidden;">
+        <span class="level-num">C</span>
+        <div class="badge" style="background:#f0fdfa;color:#0f766e;">Pattern C</div>
+        <h3>Knowledge Hub</h3>
+        <p style="font-size:13px;color:#555;margin-bottom:10px;">Lighter system prompt; the uploaded files do the heavy lifting. Best when conversations vary widely but all draw from a shared reference library.</p>
+        <div class="code" style="font-size:11px;">
+<span class="cm"># Context</span>
+This project contains Posit's internal sales
+knowledge base. When answering questions:
+- Check uploaded files before responding
+- Cite the source doc when you use it
+- Flag if info may be outdated
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: File Strategy -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 3 &mdash; File Strategy</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="row">
+      <div class="card do-card">
+        <h3>What to upload</h3>
+        <table class="decision-table" style="font-size:12.5px;margin-top:10px;">
+          <thead>
+            <tr><th>File type</th><th>Good for</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Product overview / one-pager</td><td>Answering "what does it do?" questions</td></tr>
+            <tr><td>Pricing tiers (markdown or sheet)</td><td>Accurate pricing without guessing</td></tr>
+            <tr><td>Competitive battlecards</td><td>Positioning against named competitors</td></tr>
+            <tr><td>ICP definition</td><td>Lead qualification, personalization</td></tr>
+            <tr><td>FAQs</td><td>Consistent support-style answers</td></tr>
+            <tr><td>Case studies / use cases</td><td>Proof points for specific buyer types</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card dont-card">
+        <h3>Naming &amp; hygiene</h3>
+        <p style="font-size:13px;margin-bottom:10px;">Claude reads filenames and uses them to decide what to reference. Name files like you'd name them for a new hire who needs to find them quickly.</p>
+        <table class="compare-table" style="margin-top:0;">
+          <thead>
+            <tr>
+              <th class="bad-col" style="background:#fff5f5;color:#991b1b;padding:6px 10px;">&#x274C; Avoid</th>
+              <th class="good-col" style="background:#f0fdf4;color:#14532d;padding:6px 10px;">&#x2713; Use instead</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="bad-col">doc-v3-final.pdf</td><td class="good-col">product-overview.pdf</td></tr>
+            <tr><td class="bad-col">Sheet1_export.xlsx</td><td class="good-col">pricing-tiers-2026.xlsx</td></tr>
+            <tr><td class="bad-col">notes.md</td><td class="good-col">competitor-battlecards.md</td></tr>
+            <tr><td class="bad-col">meeting_recap_03.pdf</td><td class="good-col">customer-discovery-patterns.md</td></tr>
+          </tbody>
+        </table>
+        <div class="tip" style="margin-top:12px;background:#fafaf7;color:#555;border-color:#e0e0d8;">
+          Audit your files regularly. Outdated docs silently give Claude wrong answers — stale knowledge is harder to debug than no knowledge.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Core Principles -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 4 &mdash; Core Principles</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="row">
+      <div class="card principle" style="--c:#2563eb;">
+        <h3>Knowledge, not procedures</h3>
+        <p>A Project's system prompt should answer "what does Claude know and how does it behave?" — not "what steps does Claude follow?" Procedures go in Skills. Knowledge goes here.</p>
+        <div class="tip" style="margin-top:10px;background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">
+          If your system prompt has numbered steps, move them to a Skill.
+        </div>
+      </div>
+      <div class="card principle" style="--c:#2563eb;">
+        <h3>Explain the why</h3>
+        <p>Don't just write rules — explain the reasoning. "Be consultative because our buyers are technical and distrust generic sales language" helps Claude apply the rule correctly in situations you didn't anticipate.</p>
+        <div class="tip" style="margin-top:10px;background:#eff6ff;color:#1e40af;border-color:#bfdbfe;">
+          Rules without reasons get followed literally. Rules with reasons get applied intelligently.
+        </div>
+      </div>
+    </div>
+    <div class="gap"></div>
+    <div class="row">
+      <div class="card principle" style="--c:#2563eb;">
+        <h3>Reference, don't duplicate</h3>
+        <p>If a fact lives in an uploaded file, reference it from the system prompt — don't paste the same content in. Duplicated content creates conflicts when the file is updated but the prompt isn't.</p>
+      </div>
+      <div class="card principle" style="--c:#2563eb;">
+        <h3>Stay current</h3>
+        <p>A Project's value is directly tied to the freshness of its content. Review the system prompt and files whenever your product, team, or process changes. Stale context is worse than no context.</p>
+      </div>
+    </div>
+
+    <!-- Step 5: Pitfalls -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 5 &mdash; Pitfalls</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="row">
+      <div class="card dont-card">
+        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; System prompt as workflow doc</div>
+        <p style="margin-top:8px;">The most common mistake: a 2,000-word system prompt full of "Step 1… Step 2… Step 3…" sequences. This creates a fragile, unmaintainable instruction set that Claude applies inconsistently.</p>
+        <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
+          <strong>Fix:</strong> Move every procedure into a Skill. Reference it from the Project: "For call prep, follow the call-prep skill."
+        </div>
+      </div>
+      <div class="card dont-card">
+        <div class="badge" style="background:#fee2e2;color:#dc2626;">&#x274C; Noisy or outdated files</div>
+        <p style="margin-top:8px;">Uploading everything you have, or leaving files untouched for months, silently degrades the Project. Claude draws from what's there — irrelevant or stale content bleeds into answers.</p>
+        <div class="tip" style="margin-top:12px;background:#fff5f5;color:#991b1b;border-color:#fecaca;">
+          <strong>Fix:</strong> Only upload what's directly relevant. Archive or replace files when they go stale. Fewer, better files outperform many mediocre ones.
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 6: Integration with Skills -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 6 &mdash; Integration with Skills</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="card" style="width:100%;max-width:1000px;">
+      <h3>The three-layer model</h3>
+      <p style="font-size:13px;color:#666;margin-bottom:14px;">Projects, Skills, and CLAUDE.md each operate at a different layer. Together they give Claude both persistent intelligence and reliable execution.</p>
+      <div class="orch" style="gap:0;">
+        <div class="orch-node parent" style="background:#eff6ff;border-color:#3b82f6;color:#1e40af;min-width:340px;">
+          &#x1F4DA; Project (Claude.ai)<br>
+          <span style="font-size:11px;font-weight:400;">Always-on domain knowledge &amp; persona</span>
+        </div>
+        <div class="orch-arrow" style="background:#3b82f6;"></div>
+        <div style="font-size:11px;color:#888;margin:-6px 0 2px;font-style:italic;">provides context to</div>
+        <div class="orch-arrow" style="background:#3b82f6;"></div>
+        <div class="orch-node parent" style="background:#fffbeb;border-color:#d97706;color:#92400e;min-width:340px;">
+          &#x1F4CB; Skills (Claude Code)<br>
+          <span style="font-size:11px;font-weight:400;">Intent-triggered procedural workflows</span>
+        </div>
+        <div class="orch-arrow" style="background:#9333ea;"></div>
+        <div style="font-size:11px;color:#888;margin:-6px 0 2px;font-style:italic;">scoped rules live in</div>
+        <div class="orch-arrow" style="background:#9333ea;"></div>
+        <div class="orch-node child" style="background:#f5f3ff;border-color:#9333ea;color:#6d28d9;min-width:340px;">
+          &#x1F4C4; CLAUDE.md<br>
+          <span style="font-size:11px;font-weight:400;">Persistent codebase rules, always loaded in Claude Code</span>
+        </div>
+      </div>
+      <div class="big-tip" style="margin-top:20px;">
+        <span class="tip-icon">&#x1F4A1;</span>
+        <div>
+          <h4>How to connect them</h4>
+          <p>In your Project's system prompt, name the Skills Claude should use for recurring tasks: "When asked to prep for a call, follow the call-prep skill. When asked to triage email, follow the inbox-triage skill." Claude will execute the Skill's workflow with the Project's context already loaded.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 7: Right Tool -->
+    <div class="arrow" style="--c:#2563eb;"></div>
+    <div class="step" style="background:#2563eb;">Step 7 &mdash; Right Tool</div>
+    <div class="arrow" style="--c:#2563eb;"></div>
+
+    <div class="card" style="width:100%;max-width:1000px;">
+      <h3>What goes where — cheat sheet</h3>
+      <table class="decision-table">
+        <thead>
+          <tr>
+            <th>If you want Claude to…</th>
+            <th>Put it in</th>
+            <th>Why</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Know who it's talking to and what domain it's in</td>
+            <td><span class="tag" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;">System Prompt</span></td>
+            <td>Role &amp; domain context — always-on</td>
+          </tr>
+          <tr>
+            <td>Look up a specific fact, doc, or reference</td>
+            <td><span class="tag" style="background:#f5f3ff;color:#6d28d9;border:1px solid #ddd6fe;">Uploaded File</span></td>
+            <td>Reference material — pulled when Claude needs it</td>
+          </tr>
+          <tr>
+            <td>Follow a specific workflow when asked</td>
+            <td><span class="tag" style="background:#fffbeb;color:#92400e;border:1px solid #fde68a;">Skill</span></td>
+            <td>Procedural execution — intent-triggered</td>
+          </tr>
+          <tr>
+            <td>Always follow a coding rule in a repo</td>
+            <td><span class="tag" style="background:#fafaf7;color:#555;border:1px solid #e0e0d8;">CLAUDE.md</span></td>
+            <td>Repo-level rules — always loaded in Claude Code</td>
+          </tr>
+          <tr>
+            <td>Run something automatically after a tool use</td>
+            <td><span class="tag" style="background:#fafaf7;color:#555;border:1px solid #e0e0d8;">Hook</span></td>
+            <td>Event-triggered automation</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="footer">Built for Claude Skills &middot; Best practices from real orchestration patterns &middot; April 2026</div>
+  </div><!-- end pa mode-deep -->
+
+</div><!-- end pa board -->
+</div><!-- end page-pa -->
+
 <script>
   function setMode(mode) {
     const body = document.body;
@@ -1592,18 +2055,15 @@ Uploaded Files:
 
   function setPage(page) {
     const body = document.body;
-    const tabArch = document.getElementById('tab-arch');
-    const tabSvp  = document.getElementById('tab-svp');
-
+    body.classList.remove('show-svp', 'show-pa');
+    document.querySelectorAll('.page-tab').forEach(t => t.classList.remove('active'));
     if (page === 'svp') {
       body.classList.add('show-svp');
-      tabSvp.classList.add('active');
-      tabArch.classList.remove('active');
-    } else {
-      body.classList.remove('show-svp');
-      tabArch.classList.add('active');
-      tabSvp.classList.remove('active');
+    } else if (page === 'pa') {
+      body.classList.add('show-pa');
     }
+    const tab = document.getElementById('tab-' + page);
+    if (tab) tab.classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
