@@ -37,6 +37,18 @@ Start by asking the user what task they want to turn into a skill. Don't dump a 
 
 Don't move on until you can explain the skill back to them in 2-3 sentences and they say "yes, that's it."
 
+**Before continuing, check if this is actually one skill or several.** If their workflow has multiple distinct tasks that could each be useful on their own (e.g., "triage my inbox, then review Slack, then prep for my calls"), that's not one skill — that's an orchestrator with sub-skills. Signs to look for:
+
+- The workflow has 3+ major tasks that each produce their own output
+- They say things like "first I do X, then I do a completely different thing Y"
+- Individual pieces would be useful to trigger on their own ("sometimes I just want to triage my inbox without the rest")
+- The end result is a combined briefing assembled from separate sections
+
+If you spot this, tell them:
+> "This sounds like it might be better as multiple skills chained together — an orchestrator that calls each one in sequence. That way you can run 'triage my inbox' on its own OR as part of the bigger workflow. Want to build it that way instead?"
+
+If they say yes, switch to the **skill-tree-builder** workflow. If they want to keep it as a single skill, that's fine too — just be aware the SKILL.md may run long.
+
 ---
 
 ## Step 2: Define the Trigger Phrases
